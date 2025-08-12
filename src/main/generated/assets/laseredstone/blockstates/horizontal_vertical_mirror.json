@@ -5,39 +5,32 @@
     },
     "facing=east,half=top": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "x": 180
     },
     "facing=north,half=bottom": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "y": 270
     },
     "facing=north,half=top": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "x": 180,
       "y": 270
     },
     "facing=south,half=bottom": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "y": 90
     },
     "facing=south,half=top": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "x": 180,
       "y": 90
     },
     "facing=west,half=bottom": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "y": 180
     },
     "facing=west,half=top": {
       "model": "laseredstone:block/horizontal_vertical_mirror",
-      "uvlock": true,
       "x": 180,
       "y": 180
     }

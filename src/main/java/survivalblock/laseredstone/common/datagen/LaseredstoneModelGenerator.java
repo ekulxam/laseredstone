@@ -51,13 +51,13 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 				.with(
 						BlockStateVariantMap.models(Properties.HORIZONTAL_FACING, Properties.BLOCK_HALF)
 								.register(Direction.EAST, BlockHalf.BOTTOM, straightModel)
-								.register(Direction.WEST, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_180).apply(UV_LOCK))
-								.register(Direction.SOUTH, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_90).apply(UV_LOCK))
-								.register(Direction.NORTH, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_270).apply(UV_LOCK))
-								.register(Direction.EAST, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(UV_LOCK))
-								.register(Direction.WEST, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_180).apply(UV_LOCK))
-								.register(Direction.SOUTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_90).apply(UV_LOCK))
-								.register(Direction.NORTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_270).apply(UV_LOCK))
+								.register(Direction.WEST, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_180))
+								.register(Direction.SOUTH, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_90))
+								.register(Direction.NORTH, BlockHalf.BOTTOM, straightModel.apply(ROTATE_Y_270))
+								.register(Direction.EAST, BlockHalf.TOP, straightModel.apply(ROTATE_X_180))
+								.register(Direction.WEST, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_180))
+								.register(Direction.SOUTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_90))
+								.register(Direction.NORTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_270))
 				);
 	}
 
