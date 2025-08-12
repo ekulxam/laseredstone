@@ -2,15 +2,13 @@ package survivalblock.laseredstone.common.init;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import survivalblock.laseredstone.common.Laseredstone;
+import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.block.MirrorBlock;
 
 import java.util.function.Function;
@@ -20,7 +18,14 @@ public class LaseredstoneBlocks {
     public static final Block HORIZONTAL_VERTICAL_MIRROR = registerBlock(
             "horizontal_vertical_mirror",
             MirrorBlock::new,
-            AbstractBlock.Settings.create().nonOpaque());
+            AbstractBlock.Settings.create().nonOpaque()
+    );
+
+    public static final Block LASER = registerBlock(
+            "laser",
+            LaserBlock::new,
+            AbstractBlock.Settings.create()
+    );
 
     /*public static final BlockEntityType<AmarongCoreBlockEntity> AMARONG_CORE_BLOCK_ENTITY = registerBlockEntity(
             "amarong_core_block_entity",

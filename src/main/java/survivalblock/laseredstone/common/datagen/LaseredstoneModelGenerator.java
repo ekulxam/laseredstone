@@ -8,10 +8,7 @@ import net.minecraft.client.data.BlockModelDefinitionCreator;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.BlockStateVariantMap;
 import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Model;
 import net.minecraft.client.data.ModelIds;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
 import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.state.property.Properties;
@@ -20,13 +17,10 @@ import net.minecraft.util.math.Direction;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
 
-import java.util.Optional;
-
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_180;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.UV_LOCK;
 
 public class LaseredstoneModelGenerator extends FabricModelProvider {
 
@@ -59,9 +53,5 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 								.register(Direction.SOUTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_90))
 								.register(Direction.NORTH, BlockHalf.TOP, straightModel.apply(ROTATE_X_180).apply(ROTATE_Y_270))
 				);
-	}
-
-	private static Model block(String parent, TextureKey... requiredTextureKeys) {
-		return new Model(Optional.of(Identifier.ofVanilla("block/" + parent)), Optional.empty(), requiredTextureKeys);
 	}
 }

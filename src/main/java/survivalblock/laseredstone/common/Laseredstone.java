@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
 
@@ -20,6 +21,7 @@ public class Laseredstone implements ModInitializer {
 	public void onInitialize() {
 		LaseredstoneBlocks.init();
 		LaseredstoneItems.init();
+		LaseredstoneBlockEntityTypes.init();
 	}
 
 	public static Identifier id(String path) {

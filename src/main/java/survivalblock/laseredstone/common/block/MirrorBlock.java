@@ -3,8 +3,12 @@ package survivalblock.laseredstone.common.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.fluid.FluidState;
@@ -23,10 +27,15 @@ import net.minecraft.util.math.DirectionTransformation;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
+import survivalblock.laseredstone.common.block.entity.MirrorBlockEntity;
+import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
 import java.util.Map;
 
-public class MirrorBlock extends Block {
+public class MirrorBlock extends BlockWithEntity {
 
     public static final EnumProperty<Direction> FACING = HorizontalFacingBlock.FACING;
     public static final EnumProperty<BlockHalf> HALF = Properties.BLOCK_HALF;
@@ -63,7 +72,7 @@ public class MirrorBlock extends Block {
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        boolean bottom = state.get(HALF) == BlockHalf.BOTTOM;
+        boolean bottom = isBottom(state);
         Direction direction = state.get(FACING);
         return (bottom ? STRAIGHT_BOTTOM_SHAPES : STRAIGHT_TOP_SHAPES).get(direction);
     }
@@ -95,6 +104,18 @@ public class MirrorBlock extends Block {
         return state;
     }
 
+    public static boolean isBottom(BlockState state) {
+        return state.get(HALF) == BlockHalf.BOTTOM;
+    }
+
+    public static Direction getVerticalDirection(BlockState state) {
+        return getVerticalDirection(isBottom(state));
+    }
+
+    public static Direction getVerticalDirection(boolean bottom) {
+        return bottom ? Direction.UP : Direction.DOWN;
+    }
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, HALF, WATERLOGGED);
@@ -108,6 +129,16 @@ public class MirrorBlock extends Block {
     @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {
         return false;
+    }
+
+    @Override
+    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new MirrorBlockEntity(pos, state);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return validateTicker(type, LaseredstoneBlockEntityTypes.MIRROR, MirrorBlockEntity::tick);
     }
 
 }
