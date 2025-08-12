@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "laseredstone",
+	"version": "${version}",
+	"name": "Laseredstone",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/laseredstone",
+		"sources": "https://github.com/ekulxam/laseredstone",
+		"issues": "https://github.com/ekulxam/laseredstone/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/laseredstone/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "survivalblock.laseredstone.common.Laseredstone"
+		],
+		"client": [
+			"survivalblock.laseredstone.client.LaseredstoneClient"
+		],
+		"fabric-datagen": [
+			"survivalblock.laseredstone.common.datagen.LaseredstoneDataGenerator"
+		]
+	},
+	"mixins": [
+		"laseredstone.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

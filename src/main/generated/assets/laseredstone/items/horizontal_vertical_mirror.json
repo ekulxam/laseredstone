@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "laseredstone:block/horizontal_vertical_mirror"
+  }
+}
