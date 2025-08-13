@@ -21,7 +21,7 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
 
     @Override
     public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
-        return this.deflectionTicks > 0;
+        return this.deflectionTicks > 0 && this.inputDirection != null;
     }
 
     public void decrementDeflectionTicks() {

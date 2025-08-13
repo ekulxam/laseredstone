@@ -96,7 +96,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 		WeightedVariant weightedVariant2 = BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockSubModelId(orientable, "_on"));
 		generator.blockStateCollector
 				.accept(
-						VariantsBlockModelDefinitionCreator.of(Blocks.OBSERVER)
+						VariantsBlockModelDefinitionCreator.of(orientable)
 								.with(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, weightedVariant2, weightedVariant))
 								.coordinate(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
