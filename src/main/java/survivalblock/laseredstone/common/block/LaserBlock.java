@@ -5,12 +5,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
@@ -25,12 +25,13 @@ import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 public class LaserBlock extends BlockWithEntity {
 
     public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
+    public static final BooleanProperty POWERED = Properties.POWERED;
 
     protected final MapCodec<LaserBlock> codec = MapCodec.unit(this);
 
     public LaserBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
     }
 
     @Override
@@ -49,6 +50,13 @@ public class LaserBlock extends BlockWithEntity {
     }
 
     @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState()
+                .with(FACING, ctx.getPlayerLookDirection().getOpposite())
+                .with(POWERED, false);
+    }
+
+    @Override
     protected BlockState rotate(BlockState state, BlockRotation rotation) {
         return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
@@ -60,6 +68,6 @@ public class LaserBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, POWERED);
     }
 }

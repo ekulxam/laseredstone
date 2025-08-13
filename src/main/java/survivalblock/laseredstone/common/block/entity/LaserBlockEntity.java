@@ -2,24 +2,37 @@ package survivalblock.laseredstone.common.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.ComponentsAccess;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.DyedColorComponent;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
-public class LaserBlockEntity extends LaserInteracterBlockEntity {
+public class LaserBlockEntity extends LaserInteractorBlockEntity {
+
+    public static final int DEFAULT_COLOR = 0xFFFFFFFF;
+    public static final DyedColorComponent DEFAULT_DYE_COMPONENT = new DyedColorComponent(DEFAULT_COLOR);
 
     public static final int MAX_DISTANCE = 16;
     protected int distance;
-    protected int color = 0xFFFFFFFF;
+    protected int color = DEFAULT_COLOR;
 
     public LaserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -38,10 +51,9 @@ public class LaserBlockEntity extends LaserInteracterBlockEntity {
     @Override
     protected void readData(ReadView view) {
         super.readData(view);
-        this.color = view.getInt("color", 0xFFFFFFFF);
+        this.color = view.getInt("color", DEFAULT_COLOR);
     }
 
-    @Override
     public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
         return world.isReceivingRedstonePower(blockPos);
     }
@@ -75,8 +87,8 @@ public class LaserBlockEntity extends LaserInteracterBlockEntity {
             blockEntity.distance = i - 1;
             mirrorPos = blockPos.add(vec3i.multiply(i));
             mirrorState = world.getBlockState(mirrorPos);
-            if (world.getBlockEntity(mirrorPos) instanceof LaserInteracterBlockEntity laserInteracter) {
-                laserInteracter.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity);
+            if (world.getBlockEntity(mirrorPos) instanceof LaserInteractorBlockEntity interactor) {
+                interactor.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity);
                 break;
             }
             if (mirrorState.getOpacity() >= 15 && !mirrorState.isOf(Blocks.BEDROCK)) {
@@ -90,6 +102,43 @@ public class LaserBlockEntity extends LaserInteracterBlockEntity {
             mirrorPos = blockPos.add(vec3i.multiply(i));
             Vec3d vec3d = mirrorPos.toCenterPos();
             world.addParticleClient(new DustParticleEffect(blockEntity.color, 1.0F), vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0.0, 0.0, 0.0);
+        }
+    }
+
+    @Override
+    public @Nullable Object getRenderData() {
+        return this.color;
+    }
+
+    public @Nullable Object superGetRenderData() {
+        return super.getRenderData();
+    }
+
+    @Override
+    public @Nullable Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
+        return createNbt(registries);
+    }
+
+    public boolean shouldSaveColor() {
+        return true;
+    }
+
+    @Override
+    protected void addComponents(ComponentMap.Builder builder) {
+        if (this.shouldSaveColor()) {
+            builder.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(ColorHelper.zeroAlpha(this.color)));
+        }
+    }
+
+    @Override
+    protected void readComponents(ComponentsAccess components) {
+        if (this.shouldSaveColor()) {
+            this.color = ColorHelper.fullAlpha(components.getOrDefault(DataComponentTypes.DYED_COLOR, DEFAULT_DYE_COMPONENT).rgb());
         }
     }
 }

@@ -1,3 +1,5 @@
 {
-  "block.laseredstone.horizontal_vertical_mirror": "Horizontal-Vertical Mirror"
+  "block.laseredstone.horizontal_horizontal_mirror": "Horizontal-Horizontal Mirror",
+  "block.laseredstone.horizontal_vertical_mirror": "Horizontal-Vertical Mirror",
+  "block.laseredstone.laser": "Laser"
 }
