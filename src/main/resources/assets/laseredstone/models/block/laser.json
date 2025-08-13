@@ -4,7 +4,7 @@
     "particle": "block/smooth_stone",
     "cube": "block/smooth_stone",
     "bottom": "laseredstone:block/receiver",
-    "top": "laseredstone:block/laser_top",
+    "top": "laseredstone:block/laser_front",
     "side": "laseredstone:block/laser_side",
     "overlay": "laseredstone:block/laser_overlay"
   },
