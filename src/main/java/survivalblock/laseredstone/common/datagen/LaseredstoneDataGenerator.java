@@ -33,5 +33,6 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 			}
 		}));
 		pack.addProvider(LaseredstoneLootTableGenerator::new);
+		pack.addProvider(LaseredstoneRecipeGenerator::new);
 	}
 }

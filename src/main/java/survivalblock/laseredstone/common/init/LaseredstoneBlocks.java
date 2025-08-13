@@ -2,6 +2,7 @@ package survivalblock.laseredstone.common.init;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -14,8 +15,6 @@ import survivalblock.laseredstone.common.block.HorizontalHorizontalMirrorBlock;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.block.HorizontalVerticalMirrorBlock;
 import survivalblock.laseredstone.common.block.ReceiverBlock;
-import survivalblock.laseredstone.common.block.entity.HorizontalHorizontalMirrorBlockEntity;
-import survivalblock.laseredstone.common.block.entity.ReceiverBlockEntity;
 
 import java.util.function.Function;
 
@@ -29,6 +28,7 @@ public class LaseredstoneBlocks {
                     .mapColor(MapColor.OFF_WHITE)
                     .requiresTool()
                     .strength(5.0F)
+                    .allowsSpawning(Blocks::never)
     );
 
     public static final Block HORIZONTAL_HORIZONTAL_MIRROR = registerBlock(
@@ -44,6 +44,7 @@ public class LaseredstoneBlocks {
                     .requiresTool()
                     .mapColor(MapColor.GRAY)
                     .strength(10.0F)
+                    .allowsSpawning(Blocks::never)
     );
 
     public static final Block RECEIVER = registerBlock(

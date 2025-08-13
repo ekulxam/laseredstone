@@ -1,5 +1,6 @@
 package survivalblock.laseredstone.common.block.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
@@ -55,7 +56,12 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
     }
 
     public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
-        return world.isReceivingRedstonePower(blockPos);
+        boolean powered = world.isReceivingRedstonePower(blockPos);
+        if (powered != blockState.get(LaserBlock.POWERED)) {
+            blockState = blockState.cycle(LaserBlock.POWERED);
+            world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
+        }
+        return powered;
     }
 
     @Override

@@ -3,7 +3,6 @@ package survivalblock.laseredstone.common.datagen;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.client.data.BlockModelDefinitionCreator;
 import net.minecraft.client.data.BlockStateModelGenerator;
@@ -17,7 +16,6 @@ import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
-import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
@@ -29,6 +27,8 @@ import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_90;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
 import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
+import static net.minecraft.client.data.BlockStateModelGenerator.createBooleanModelMap;
+import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
 
 public class LaseredstoneModelGenerator extends FabricModelProvider {
 
@@ -57,6 +57,8 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 		Identifier laserModel = ModelIds.getBlockModelId(LaseredstoneBlocks.LASER);
 		registerOrientableRedstone(blockStateModelGenerator, LaseredstoneBlocks.LASER, laserModel);
 		blockStateModelGenerator.registerTintedItemModel(LaseredstoneBlocks.LASER, laserModel, new DyeTintSource(LaserBlockEntity.DEFAULT_COLOR));
+
+		registerRedstone(blockStateModelGenerator, LaseredstoneBlocks.RECEIVER);
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 	}
 
 	public static BlockModelDefinitionCreator createHVBlockState(Block stairsBlock, Identifier modelId) {
-		WeightedVariant straightModel = BlockStateModelGenerator.createWeightedVariant(modelId);
+		WeightedVariant straightModel = createWeightedVariant(modelId);
 		return VariantsBlockModelDefinitionCreator.of(stairsBlock)
 				.with(
 						BlockStateVariantMap.models(Properties.HORIZONTAL_FACING, Properties.BLOCK_HALF)
@@ -80,7 +82,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 	}
 
 	public static BlockModelDefinitionCreator createHHBlockState(Block stairsBlock, Identifier modelId) {
-		WeightedVariant straightModel = BlockStateModelGenerator.createWeightedVariant(modelId).apply(ROTATE_X_90);
+		WeightedVariant straightModel = createWeightedVariant(modelId).apply(ROTATE_X_90);
 		return VariantsBlockModelDefinitionCreator.of(stairsBlock)
 				.with(
 						BlockStateVariantMap.models(Properties.HORIZONTAL_FACING)
@@ -92,13 +94,22 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 	}
 
 	public static void registerOrientableRedstone(BlockStateModelGenerator generator, Block orientable, Identifier modelId) {
-		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(modelId);
-		WeightedVariant weightedVariant2 = BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockSubModelId(orientable, "_on"));
+		WeightedVariant weightedVariant = createWeightedVariant(modelId);
+		WeightedVariant weightedVariant2 = createWeightedVariant(ModelIds.getBlockSubModelId(orientable, "_on"));
 		generator.blockStateCollector
 				.accept(
 						VariantsBlockModelDefinitionCreator.of(orientable)
-								.with(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, weightedVariant2, weightedVariant))
+								.with(createBooleanModelMap(Properties.POWERED, weightedVariant2, weightedVariant))
 								.coordinate(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
+	}
+
+	public static void registerRedstone(BlockStateModelGenerator generator, Block block) {
+		Identifier modelId = ModelIds.getBlockModelId(block);
+		WeightedVariant weightedVariant = createWeightedVariant(modelId);
+		WeightedVariant weightedVariant2 = createWeightedVariant(ModelIds.getBlockSubModelId(block, "_on"));
+		generator.blockStateCollector
+				.accept(VariantsBlockModelDefinitionCreator.of(block).with(createBooleanModelMap(Properties.POWERED, weightedVariant2, weightedVariant)));
+		generator.registerItemModel(block.asItem(), modelId);
 	}
 }

@@ -1,10 +1,11 @@
 {
   "parent": "laseredstone:block/laser",
   "textures": {
-    "particle": "laseredstone:block/laser_top",
-    "bottom": "laseredstone:block/laser_bottom",
+    "particle": "block/smooth_stone",
+    "cube": "block/smooth_stone",
+    "bottom": "laseredstone:block/receiver_on",
     "top": "laseredstone:block/laser_top",
-    "side": "laseredstone:block/laser_side",
+    "side": "laseredstone:block/laser_side_on",
     "overlay": "laseredstone:block/laser_overlay"
   }
 }

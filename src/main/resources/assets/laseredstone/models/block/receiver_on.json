@@ -1,0 +1,8 @@
+{
+  "parent": "laseredstone:block/receiver",
+  "textures": {
+    "particle": "block/netherite_block",
+    "cube": "block/netherite_block",
+    "overlay": "laseredstone:block/receiver_on"
+  }
+}

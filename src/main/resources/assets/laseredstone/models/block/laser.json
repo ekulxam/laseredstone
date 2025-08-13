@@ -1,13 +1,26 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "laseredstone:block/laser_top",
-    "bottom": "laseredstone:block/laser_bottom",
+    "particle": "block/smooth_stone",
+    "cube": "block/smooth_stone",
+    "bottom": "laseredstone:block/receiver",
     "top": "laseredstone:block/laser_top",
     "side": "laseredstone:block/laser_side",
     "overlay": "laseredstone:block/laser_overlay"
   },
   "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "down" },
+        "up": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "up" },
+        "north": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "north" },
+        "south": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "south" },
+        "west": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "west" },
+        "east": {"uv": [0, 0, 16, 16], "texture": "#cube", "cullface": "east" }
+      }
+    },
     {
       "from": [0, 0, 0],
       "to": [16, 16, 16],
