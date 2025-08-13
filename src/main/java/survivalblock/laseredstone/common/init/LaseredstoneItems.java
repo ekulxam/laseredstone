@@ -11,12 +11,14 @@ public class LaseredstoneItems {
     public static final Item HORIZONTAL_VERTICAL_MIRROR = Items.register(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR);
     public static final Item HORIZONTAL_HORIZONTAL_MIRROR = Items.register(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
     public static final Item LASER = Items.register(LaseredstoneBlocks.LASER);
+    public static final Item RECEIVER = Items.register(LaseredstoneBlocks.RECEIVER);
 
     public static void init() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(HORIZONTAL_VERTICAL_MIRROR);
             entries.add(HORIZONTAL_HORIZONTAL_MIRROR);
             entries.add(LASER);
+            entries.add(RECEIVER);
         });
     }
 }

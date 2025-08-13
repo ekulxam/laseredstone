@@ -18,5 +18,6 @@ public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
         translationBuilder.add(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, "Horizontal-Vertical Mirror");
         translationBuilder.add(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, "Horizontal-Horizontal Mirror");
         translationBuilder.add(LaseredstoneBlocks.LASER, "Laser");
+        translationBuilder.add(LaseredstoneBlocks.RECEIVER, "Receiver");
     }
 }

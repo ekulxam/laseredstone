@@ -11,7 +11,7 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
 
     public static final int MAX_DEFLECTION_TICKS = 2;
 
-    protected int deflectionTicks = MAX_DEFLECTION_TICKS;
+    protected int deflectionTicks = 0;
     @Nullable
     protected Direction inputDirection = null;
 

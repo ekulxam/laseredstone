@@ -28,6 +28,7 @@ public class LaseredstoneBlocks {
                     .sounds(BlockSoundGroup.GLASS)
                     .mapColor(MapColor.OFF_WHITE)
                     .requiresTool()
+                    .strength(5.0F)
     );
 
     public static final Block HORIZONTAL_HORIZONTAL_MIRROR = registerBlock(
@@ -42,6 +43,7 @@ public class LaseredstoneBlocks {
             AbstractBlock.Settings.create()
                     .requiresTool()
                     .mapColor(MapColor.GRAY)
+                    .strength(10.0F)
     );
 
     public static final Block RECEIVER = registerBlock(
