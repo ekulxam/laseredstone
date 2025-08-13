@@ -43,17 +43,18 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
     public abstract Direction getOutputDirection(World world, BlockPos blockPos, BlockState blockState);
 
     @Override
-    public void receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
+    public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
         if (!this.isAcceptableDirection(inputDirection, world, blockPos, blockState)) {
-            return;
+            return false;
         }
         if (this.deflectionTicks == MAX_DEFLECTION_TICKS && inputDirection != this.inputDirection) {
             super.receiveLaser(inputDirection, world, blockPos, blockState, sender);
-            return;
+            return false;
         }
         this.deflectionTicks = MAX_DEFLECTION_TICKS;
         this.inputDirection = inputDirection;
         this.color = sender.color;
+        return true;
     }
 
     @Override

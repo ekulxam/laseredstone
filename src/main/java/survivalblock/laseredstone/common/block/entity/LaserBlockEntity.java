@@ -3,6 +3,7 @@ package survivalblock.laseredstone.common.block.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BeamEmitter;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentsAccess;
@@ -25,15 +26,21 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
+import survivalblock.laseredstone.mixin.BeamEmitterMixin;
 
-public class LaserBlockEntity extends LaserInteractorBlockEntity {
+import java.util.List;
+
+public class LaserBlockEntity extends LaserInteractorBlockEntity implements BeamEmitter {
 
     public static final int DEFAULT_COLOR = 0xFFFFFFFF;
     public static final DyedColorComponent DEFAULT_DYE_COMPONENT = new DyedColorComponent(DEFAULT_COLOR);
 
     public static final int MAX_DISTANCE = 16;
-    protected int distance;
+    protected int distance = -1;
     protected int color = DEFAULT_COLOR;
+
+    // for rendering
+    protected @Nullable Direction currentOutputDirection = null;
 
     public LaserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -65,12 +72,13 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
     }
 
     @Override
-    public void receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
+    public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
         if (!world.isClient()) {
             Vec3d explosion = blockPos.toCenterPos();
             world.breakBlock(blockPos, false);
             world.createExplosion(null, explosion.x, explosion.y, explosion.z, 6F, World.ExplosionSourceType.NONE);
         }
+        return false;
     }
 
     @SuppressWarnings("unused")
@@ -83,9 +91,12 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
             mirrorBlockEntity.decrementDeflectionTicks();
         }
         if (!blockEntity.canLaser(world, blockPos, blockState)) {
+            blockEntity.currentOutputDirection = null;
+            blockEntity.distance = -1;
             return;
         }
         Direction direction = blockEntity.getOutputDirection(world, blockPos, blockState);
+        blockEntity.currentOutputDirection = direction;
         Vec3i vec3i = direction.getVector();
         BlockPos mirrorPos;
         BlockState mirrorState;
@@ -94,7 +105,9 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
             mirrorPos = blockPos.add(vec3i.multiply(i));
             mirrorState = world.getBlockState(mirrorPos);
             if (world.getBlockEntity(mirrorPos) instanceof LaserInteractorBlockEntity interactor) {
-                interactor.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity);
+                if (interactor.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity)) {
+                    blockEntity.distance++;
+                }
                 break;
             }
             if (mirrorState.getOpacity() >= 15 && !mirrorState.isOf(Blocks.BEDROCK)) {
@@ -104,10 +117,12 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
         if (!world.isClient) {
             return;
         }
-        for (int i = 1; i < blockEntity.distance + 1; i++) {
-            mirrorPos = blockPos.add(vec3i.multiply(i));
-            Vec3d vec3d = mirrorPos.toCenterPos();
-            world.addParticleClient(new DustParticleEffect(blockEntity.color, 1.0F), vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0.0, 0.0, 0.0);
+        if (world.getTime() % 20 == 0) {
+            for (int i = 1; i <= blockEntity.distance; i++) {
+                mirrorPos = blockPos.add(vec3i.multiply(i));
+                Vec3d vec3d = mirrorPos.toCenterPos();
+                world.addParticleClient(new DustParticleEffect(blockEntity.color, 1.0F), vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0.0, 0.0, 0.0);
+            }
         }
     }
 
@@ -146,5 +161,19 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity {
         if (this.shouldSaveColor()) {
             this.color = ColorHelper.fullAlpha(components.getOrDefault(DataComponentTypes.DYED_COLOR, DEFAULT_DYE_COMPONENT).rgb());
         }
+    }
+
+    @Override
+    public List<BeamSegment> getBeamSegments() {
+        if (this.distance <= -1 || this.currentOutputDirection == null) {
+            return List.of();
+        }
+        BeamSegment beam = new BeamSegment(this.color);
+        ((BeamEmitterMixin.BeamSegmentMixin) beam).laseredstone$setHeight(this.distance + 1);
+        return List.of(beam);
+    }
+
+    public @Nullable Direction getCurrentOutputDirection() {
+        return this.currentOutputDirection;
     }
 }

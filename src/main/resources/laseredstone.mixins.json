@@ -3,12 +3,16 @@
 	"package": "survivalblock.laseredstone.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"BeamEmitterMixin",
+		"BeamEmitterMixin$BeamSegmentMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
 	},
 	"overwrites": {
 		"requireAnnotations": true
-	}
+	},
+	"client": [
+		"BeaconBlockEntityRendererMixin"
+	]
 }

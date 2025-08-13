@@ -24,8 +24,9 @@ public class ReceiverBlockEntity extends LaserInteractorBlockEntity {
     }
 
     @Override
-    public void receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
+    public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
         this.receiveTicks = MAX_DEFLECTION_TICKS;
+        return false;
     }
 
     public static void tick(World world, BlockPos blockPos, BlockState blockState, ReceiverBlockEntity blockEntity) {

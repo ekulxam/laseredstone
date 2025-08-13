@@ -18,6 +18,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.entity.HorizontalHorizontalMirrorBlockEntity;
+import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
+import survivalblock.laseredstone.common.block.entity.MirrorBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
 import java.util.Map;
@@ -55,6 +57,6 @@ public class HorizontalHorizontalMirrorBlock extends MirrorBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, LaseredstoneBlockEntityTypes.HORIZONTAL_HORIZONTAL_MIRROR, HorizontalHorizontalMirrorBlockEntity::tick);
+        return validateTicker(type, LaseredstoneBlockEntityTypes.HORIZONTAL_HORIZONTAL_MIRROR, MirrorBlockEntity::tick);
     }
 }

@@ -13,5 +13,14 @@ public abstract class LaserInteractorBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
-    public abstract void receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender);
+    /**
+     * Called when an existing laser encounters an {@link LaserInteractorBlockEntity}
+     * @param inputDirection the direction the laser is coming from
+     * @param world the world
+     * @param blockPos the {@link BlockPos} of this {@link LaserInteractorBlockEntity}
+     * @param blockState the {@link BlockState} of this {@link LaserInteractorBlockEntity}
+     * @param sender the {@link LaserBlockEntity} that the laser belongs to
+     * @return whether the {@link LaserBlockEntity#distance} should be incremented (mirrors should return true so the laser ends inside them)
+     */
+    public abstract boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender);
 }
