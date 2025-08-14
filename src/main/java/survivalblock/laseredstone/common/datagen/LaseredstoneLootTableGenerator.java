@@ -26,6 +26,7 @@ public class LaseredstoneLootTableGenerator extends FabricBlockLootTableProvider
         addDrop(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR);
         addDrop(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
         addDrop(LaseredstoneBlocks.RECEIVER);
+        addDrop(LaseredstoneBlocks.LENS);
     }
 
     public LootTable.Builder laserDrops(Block drop) {

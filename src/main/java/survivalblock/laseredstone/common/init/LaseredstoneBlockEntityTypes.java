@@ -10,6 +10,7 @@ import survivalblock.laseredstone.common.Laseredstone;
 import survivalblock.laseredstone.common.block.entity.HorizontalHorizontalMirrorBlockEntity;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.block.entity.HorizontalVerticalMirrorBlockEntity;
+import survivalblock.laseredstone.common.block.entity.LensBlockEntity;
 import survivalblock.laseredstone.common.block.entity.MirrorBlockEntity;
 import survivalblock.laseredstone.common.block.entity.ReceiverBlockEntity;
 
@@ -26,6 +27,9 @@ public class LaseredstoneBlockEntityTypes {
 
     public static final BlockEntityType<ReceiverBlockEntity> RECEIVER =
             register("receiver", ReceiverBlockEntity::new, LaseredstoneBlocks.RECEIVER);
+
+    public static final BlockEntityType<LensBlockEntity> LENS =
+            register("lens", LensBlockEntity::new, LaseredstoneBlocks.LENS);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(
             String name,

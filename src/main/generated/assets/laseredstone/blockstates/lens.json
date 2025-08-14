@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "laseredstone:block/lens",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "laseredstone:block/lens",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "laseredstone:block/lens"
+    },
+    "facing=south": {
+      "model": "laseredstone:block/lens",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "laseredstone:block/lens",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "laseredstone:block/lens",
+      "y": 270
+    }
+  }
+}

@@ -14,6 +14,7 @@ import survivalblock.laseredstone.common.Laseredstone;
 import survivalblock.laseredstone.common.block.HorizontalHorizontalMirrorBlock;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.block.HorizontalVerticalMirrorBlock;
+import survivalblock.laseredstone.common.block.LensBlock;
 import survivalblock.laseredstone.common.block.ReceiverBlock;
 
 import java.util.function.Function;
@@ -51,6 +52,12 @@ public class LaseredstoneBlocks {
             "receiver",
             ReceiverBlock::new,
             AbstractBlock.Settings.copy(LASER)
+    );
+
+    public static final Block LENS = registerBlock(
+            "lens",
+            LensBlock::new,
+            AbstractBlock.Settings.copy(RECEIVER)
     );
 
     @SuppressWarnings("SameParameterValue")

@@ -20,6 +20,7 @@ public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
         translationBuilder.add(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, "Horizontal-Horizontal Mirror");
         translationBuilder.add(LaseredstoneBlocks.LASER, "Laser");
         translationBuilder.add(LaseredstoneBlocks.RECEIVER, "Receiver");
+        translationBuilder.add(LaseredstoneBlocks.LENS, "Lens");
         translationBuilder.add(LaseredstoneTags.ALWAYS_ALLOWS_LASERS, "Laseredstone - Always Allows Lasers");
         translationBuilder.add(LaseredstoneTags.ALWAYS_DENIES_LASERS, "Laseredstone - Always Denies Lasers");
         translationBuilder.add("death.attack.laseredstone.laser", "%1$s was fried by an overcharged laser");

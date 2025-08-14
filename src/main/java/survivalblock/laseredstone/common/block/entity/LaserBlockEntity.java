@@ -77,7 +77,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             blockState = blockState.cycle(LaserBlock.POWERED);
             world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
         }
-        this.overcharged = world.getReceivedStrongRedstonePower(blockPos) >= 15;
+        this.overcharged = false;
         return powered;
     }
 
@@ -134,7 +134,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
         if (wasOff) {
             blockEntity.spawnDustParticles(world, blockPos);
         }
-        if (blockEntity.overcharged) {
+        if (blockEntity.isOvercharged()) {
             Vec3d center = blockPos.toCenterPos();
             Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(blockEntity.distance + 0.375));
             if (world instanceof ServerWorld serverWorld) {

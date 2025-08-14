@@ -12,6 +12,7 @@ public class LaseredstoneItems {
     public static final Item HORIZONTAL_HORIZONTAL_MIRROR = Items.register(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
     public static final Item LASER = Items.register(LaseredstoneBlocks.LASER);
     public static final Item RECEIVER = Items.register(LaseredstoneBlocks.RECEIVER);
+    public static final Item LENS = Items.register(LaseredstoneBlocks.LENS);
 
     public static void init() {
         ItemGroupEvents.ModifyEntries addLaseredstoneItems = entries -> {
@@ -19,6 +20,7 @@ public class LaseredstoneItems {
             entries.add(HORIZONTAL_HORIZONTAL_MIRROR);
             entries.add(LASER);
             entries.add(RECEIVER);
+            entries.add(LENS);
         };
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(addLaseredstoneItems);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(addLaseredstoneItems);

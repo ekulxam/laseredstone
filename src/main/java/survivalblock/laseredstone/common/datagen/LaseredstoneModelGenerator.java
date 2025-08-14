@@ -20,15 +20,7 @@ import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
 
-import static net.minecraft.client.data.BlockStateModelGenerator.NO_OP;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_270;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.createBooleanModelMap;
-import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
+import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
 public class LaseredstoneModelGenerator extends FabricModelProvider {
 
@@ -59,6 +51,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 		blockStateModelGenerator.registerTintedItemModel(LaseredstoneBlocks.LASER, laserModel, new DyeTintSource(LaserBlockEntity.DEFAULT_COLOR));
 
 		registerRedstone(blockStateModelGenerator, LaseredstoneBlocks.RECEIVER);
+		registerOrientableWithItem(blockStateModelGenerator, LaseredstoneBlocks.LENS);
 	}
 
 	@Override
@@ -91,6 +84,17 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 								.register(Direction.SOUTH, straightModel.apply(ROTATE_Y_90))
 								.register(Direction.NORTH, straightModel.apply(ROTATE_Y_270))
 				);
+	}
+
+	public static void registerOrientableWithItem(BlockStateModelGenerator generator, Block orientable) {
+		Identifier modelId = ModelIds.getBlockModelId(orientable);
+		WeightedVariant weightedVariant = createWeightedVariant(modelId);
+		generator.blockStateCollector
+				.accept(
+						VariantsBlockModelDefinitionCreator.of(orientable, weightedVariant)
+								.coordinate(NORTH_DEFAULT_ROTATION_OPERATIONS)
+				);
+		generator.registerItemModel(orientable.asItem(), modelId);
 	}
 
 	public static void registerOrientableRedstone(BlockStateModelGenerator generator, Block orientable, Identifier modelId) {

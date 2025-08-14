@@ -63,6 +63,17 @@ public class LaseredstoneRecipeGenerator extends FabricRecipeProvider {
                         .criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK))
                         .criterion("has_gem", conditionsFromTag(ConventionalItemTags.GEMS))
                         .offerTo(this.exporter);
+                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.LENS)
+                        .pattern("|#|")
+                        .pattern("|G|")
+                        .pattern("|#|")
+                        .input('G', ConventionalItemTags.GEMS)
+                        .input('|', Items.NETHERITE_INGOT)
+                        .input('#', Blocks.GLASS)
+                        .criterion("has_gem", conditionsFromTag(ConventionalItemTags.GEMS))
+                        .criterion(hasItem(Items.NETHERITE_INGOT), conditionsFromItem(Items.NETHERITE_INGOT))
+                        .criterion(hasItem(Blocks.GLASS), conditionsFromItem(Blocks.GLASS))
+                        .offerTo(this.exporter);
             }
         };
     }
