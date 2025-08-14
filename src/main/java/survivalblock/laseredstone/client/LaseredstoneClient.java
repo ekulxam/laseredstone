@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import survivalblock.laseredstone.client.render.LaserBlockEntityRenderer;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;

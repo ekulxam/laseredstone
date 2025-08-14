@@ -2,22 +2,26 @@ package survivalblock.laseredstone.common.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeamEmitter;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -26,6 +30,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
+import survivalblock.laseredstone.common.init.LaseredstoneDamageTypes;
+import survivalblock.laseredstone.common.init.LaseredstoneTags;
 import survivalblock.laseredstone.mixin.BeamEmitterMixin;
 
 import java.util.List;
@@ -36,8 +42,11 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     public static final DyedColorComponent DEFAULT_DYE_COMPONENT = new DyedColorComponent(DEFAULT_COLOR);
 
     public static final int MAX_DISTANCE = 16;
-    protected int distance = -1;
+    public static final int DEFAULT_DISTANCE = -1;
+
+    protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
+    protected boolean overcharged = false;
 
     // for rendering
     protected @Nullable Direction currentOutputDirection = null;
@@ -68,6 +77,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             blockState = blockState.cycle(LaserBlock.POWERED);
             world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
         }
+        this.overcharged = world.getReceivedStrongRedstonePower(blockPos) >= 15;
         return powered;
     }
 
@@ -91,10 +101,14 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             mirrorBlockEntity.decrementDeflectionTicks();
         }
         if (!blockEntity.canLaser(world, blockPos, blockState)) {
+            if (blockEntity.distance > DEFAULT_DISTANCE) {
+                blockEntity.spawnDustParticles(world, blockPos);
+            }
+            blockEntity.distance = DEFAULT_DISTANCE;
             blockEntity.currentOutputDirection = null;
-            blockEntity.distance = -1;
             return;
         }
+        boolean wasOff = blockEntity.distance == DEFAULT_DISTANCE;
         Direction direction = blockEntity.getOutputDirection(world, blockPos, blockState);
         blockEntity.currentOutputDirection = direction;
         Vec3i vec3i = direction.getVector();
@@ -104,25 +118,83 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             blockEntity.distance = i - 1;
             mirrorPos = blockPos.add(vec3i.multiply(i));
             mirrorState = world.getBlockState(mirrorPos);
+            if (mirrorState.isIn(LaseredstoneTags.ALWAYS_DENIES_LASERS)) {
+                break;
+            }
             if (world.getBlockEntity(mirrorPos) instanceof LaserInteractorBlockEntity interactor) {
                 if (interactor.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity)) {
                     blockEntity.distance++;
                 }
                 break;
             }
-            if (mirrorState.getOpacity() >= 15 && !mirrorState.isOf(Blocks.BEDROCK)) {
+            if (mirrorState.getOpacity() >= 15 && !mirrorState.isIn(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)) {
                 break;
             }
         }
+        if (wasOff) {
+            blockEntity.spawnDustParticles(world, blockPos);
+        }
+        if (blockEntity.overcharged) {
+            Vec3d center = blockPos.toCenterPos();
+            Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(blockEntity.distance + 0.375));
+            if (world instanceof ServerWorld serverWorld) {
+                DamageSource source = new DamageSource(LaseredstoneDamageTypes.getFromWorld(serverWorld, LaseredstoneDamageTypes.LASER));
+                serverWorld.iterateEntities().forEach(entity -> {
+                    if (entity == null || !entity.isAlive() || !entity.getBoundingBox().intersects(box)) {
+                        return;
+                    }
+                    entity.damage(serverWorld, source, getDamage(entity));
+                });
+            }
+        }
+    }
+
+    public static float getDamage(Entity entity) {
+        return entity instanceof LivingEntity living ? getLivingDamage(living) : 2;
+    }
+
+    public static float getLivingDamage(LivingEntity living) {
+        return Math.max(2, (living.getMaxHealth() + living.getAbsorptionAmount()) * 0.3F);
+    }
+
+    public static Box expandInOneDirection(Box box, Vec3d vec3i) {
+        double x = vec3i.getX();
+        double y = vec3i.getY();
+        double z = vec3i.getZ();
+        if (x > 0) {
+            box = box.withMaxX(box.maxX + x);
+        } else if (x < 0) {
+            box = box.withMinX(box.minX + x);
+        }
+        if (y > 0) {
+            box = box.withMaxY(box.maxY + y);
+        } else if (y < 0) {
+            box = box.withMinY(box.minY + y);
+        }
+        if (z > 0) {
+            box = box.withMaxZ(box.maxZ + z);
+        } else if (z < 0) {
+            box = box.withMinZ(box.minZ + z);
+        }
+        return box;
+    }
+
+    public void spawnDustParticles(World world, BlockPos blockPos) {
         if (!world.isClient) {
             return;
         }
-        if (world.getTime() % 20 == 0) {
-            for (int i = 1; i <= blockEntity.distance; i++) {
-                mirrorPos = blockPos.add(vec3i.multiply(i));
-                Vec3d vec3d = mirrorPos.toCenterPos();
-                world.addParticleClient(new DustParticleEffect(blockEntity.color, 1.0F), vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0.0, 0.0, 0.0);
-            }
+        if (this.currentOutputDirection == null) {
+            return;
+        }
+        if (this.distance <= DEFAULT_DISTANCE) {
+            return;
+        }
+        Vec3i vec3i = currentOutputDirection.getVector();
+        BlockPos pos;
+        for (int i = 1; i <= this.distance; i++) {
+            pos = blockPos.add(vec3i.multiply(i));
+            Vec3d vec3d = pos.toCenterPos();
+            world.addParticleClient(new DustParticleEffect(this.color, 1.0F), vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0.0, 0.0, 0.0);
         }
     }
 
@@ -165,7 +237,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     @Override
     public List<BeamSegment> getBeamSegments() {
-        if (this.distance <= -1 || this.currentOutputDirection == null) {
+        if (this.distance <= DEFAULT_DISTANCE || this.currentOutputDirection == null) {
             return List.of();
         }
         BeamSegment beam = new BeamSegment(this.color);
@@ -175,5 +247,17 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     public @Nullable Direction getCurrentOutputDirection() {
         return this.currentOutputDirection;
+    }
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public int getDistance() {
+        return this.distance;
+    }
+
+    public boolean isOvercharged() {
+        return this.overcharged;
     }
 }

@@ -54,6 +54,7 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
         this.deflectionTicks = MAX_DEFLECTION_TICKS;
         this.inputDirection = inputDirection;
         this.color = sender.color;
+        this.overcharged = sender.overcharged;
         return true;
     }
 

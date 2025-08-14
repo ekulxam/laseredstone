@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
+import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,5 +20,10 @@ public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
         translationBuilder.add(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, "Horizontal-Horizontal Mirror");
         translationBuilder.add(LaseredstoneBlocks.LASER, "Laser");
         translationBuilder.add(LaseredstoneBlocks.RECEIVER, "Receiver");
+        translationBuilder.add(LaseredstoneTags.ALWAYS_ALLOWS_LASERS, "Laseredstone - Always Allows Lasers");
+        translationBuilder.add(LaseredstoneTags.ALWAYS_DENIES_LASERS, "Laseredstone - Always Denies Lasers");
+        translationBuilder.add("death.attack.laseredstone.laser", "%1$s was fried by an overcharged laser");
+        translationBuilder.add("death.attack.laseredstone.laser.player", "%1$s was fried by an overcharged laser whilst fighting %2$s");
+        translationBuilder.add("death.attack.laseredstone.laser.item", "%1$s was fried by an overcharged laser whilst fighting %2$s using %3$s");
     }
 }
