@@ -3,6 +3,9 @@
   "block.laseredstone.horizontal_vertical_mirror": "Horizontal-Vertical Mirror",
   "block.laseredstone.laser": "Laser",
   "block.laseredstone.receiver": "Receiver",
+  "death.attack.laseredstone.laser": "%1$s was fried by an overcharged laser",
+  "death.attack.laseredstone.laser.item": "%1$s was fried by an overcharged laser whilst fighting %2$s using %3$s",
+  "death.attack.laseredstone.laser.player": "%1$s was fried by an overcharged laser whilst fighting %2$s",
   "tag.block.laseredstone.always_allows_lasers": "Laseredstone - Always Allows Lasers",
   "tag.block.laseredstone.always_denies_lasers": "Laseredstone - Always Denies Lasers"
 }
