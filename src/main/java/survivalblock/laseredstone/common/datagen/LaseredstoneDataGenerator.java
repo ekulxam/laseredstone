@@ -54,6 +54,9 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 
 				builder(DamageTypeTags.BYPASSES_EFFECTS)
 						.add(LaseredstoneDamageTypes.LASER);
+
+				builder(LaseredstoneTags.BYPASSES_CREATIVE_MODE)
+						.add(LaseredstoneDamageTypes.LASER);
 			}
 		});
 		pack.addProvider(LaseredstoneLootTableGenerator::new);

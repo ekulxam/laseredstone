@@ -1,18 +1,19 @@
 {
-	"required": true,
-	"package": "survivalblock.laseredstone.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"BeamEmitterMixin",
-		"BeamEmitterMixin$BeamSegmentMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	},
-	"client": [
-		"BeaconBlockEntityRendererMixin"
+  "required": true,
+  "package": "survivalblock.laseredstone.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BeamEmitterMixin",
+    "BeamEmitterMixin$BeamSegmentMixin",
+    "PlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "BeaconBlockEntityRendererMixin"
 	]
 }
