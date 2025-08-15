@@ -9,7 +9,7 @@ import survivalblock.laseredstone.common.block.HorizontalVerticalMirrorBlock;
 import survivalblock.laseredstone.common.block.MirrorBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
-public class HorizontalVerticalMirrorBlockEntity extends MirrorBlockEntity {
+public class HorizontalVerticalMirrorBlockEntity extends ActualMirrorBlockEntity {
 
     public HorizontalVerticalMirrorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

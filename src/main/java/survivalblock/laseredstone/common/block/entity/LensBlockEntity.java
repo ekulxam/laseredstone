@@ -29,13 +29,6 @@ public class LensBlockEntity extends MirrorBlockEntity {
     }
 
     @Override
-    public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
-        boolean success = super.receiveLaser(inputDirection, world, blockPos, blockState, sender);
-        this.overcharged = true;
-        return success;
-    }
-
-    @Override
     public boolean isOvercharged() {
         return true;
     }

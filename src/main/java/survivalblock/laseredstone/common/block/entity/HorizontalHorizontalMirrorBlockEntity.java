@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import survivalblock.laseredstone.common.block.MirrorBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
-public class HorizontalHorizontalMirrorBlockEntity extends MirrorBlockEntity {
+public class HorizontalHorizontalMirrorBlockEntity extends ActualMirrorBlockEntity {
 
     public HorizontalHorizontalMirrorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

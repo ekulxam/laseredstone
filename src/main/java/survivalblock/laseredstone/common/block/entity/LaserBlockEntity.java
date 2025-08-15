@@ -46,7 +46,6 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
-    protected boolean overcharged = false;
 
     // for rendering
     protected @Nullable Direction currentOutputDirection = null;
@@ -77,7 +76,6 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             blockState = blockState.cycle(LaserBlock.POWERED);
             world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
         }
-        this.overcharged = false;
         return powered;
     }
 
@@ -154,13 +152,13 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     public static float getLivingDamage(LivingEntity living) {
-        return Math.max(2, (living.getMaxHealth() + living.getAbsorptionAmount()) * 0.3F);
+        return Math.max(2, (living.getMaxHealth() + living.getAbsorptionAmount()) * 0.25F);
     }
 
-    public static Box expandInOneDirection(Box box, Vec3d vec3i) {
-        double x = vec3i.getX();
-        double y = vec3i.getY();
-        double z = vec3i.getZ();
+    public static Box expandInOneDirection(Box box, Vec3d vec3d) {
+        double x = vec3d.getX();
+        double y = vec3d.getY();
+        double z = vec3d.getZ();
         if (x > 0) {
             box = box.withMaxX(box.maxX + x);
         } else if (x < 0) {
@@ -257,7 +255,10 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
         return this.distance;
     }
 
+    public void setOvercharged(boolean overcharged) {
+    }
+
     public boolean isOvercharged() {
-        return this.overcharged;
+        return false;
     }
 }
