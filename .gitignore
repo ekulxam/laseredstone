@@ -41,4 +41,3 @@ replay_*.log
 /src/main/generated/.cache
 .github/ISSUE_TEMPLATE/issue.yml
 /.github
-gradlew
