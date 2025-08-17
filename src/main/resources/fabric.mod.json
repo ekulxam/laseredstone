@@ -3,9 +3,9 @@
 	"id": "laseredstone",
 	"version": "${version}",
 	"name": "Laseredstone",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Bringing lasers to redstone",
 	"authors": [
-		"Me!"
+		"Survivalblock"
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/laseredstone",
@@ -34,8 +34,5 @@
 		"minecraft": "~1.21.8",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
