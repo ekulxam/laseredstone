@@ -5,7 +5,7 @@
 	"textures": {
 		"0": "block/netherite_block",
 		"1": "block/glass",
-		"side": "laseredstone:block/laser_side"
+		"particle": "block/netherite_block"
 	},
 	"elements": [
 		{

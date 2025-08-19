@@ -1,2 +1,2 @@
-Laseredstone 1.0.1+1.21.8
-- Set up GitHub workflows and Modrinth publishing
+Laseredstone 1.0.2+1.21.8
+- Fix missing texture for lens block particle
