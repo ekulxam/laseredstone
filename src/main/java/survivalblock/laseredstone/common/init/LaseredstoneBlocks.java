@@ -43,7 +43,6 @@ public class LaseredstoneBlocks {
             LaserBlock::new,
             AbstractBlock.Settings.create()
                     .requiresTool()
-                    .mapColor(MapColor.GRAY)
                     .strength(10.0F)
                     .allowsSpawning(Blocks::never)
     );
@@ -51,13 +50,13 @@ public class LaseredstoneBlocks {
     public static final Block RECEIVER = registerBlock(
             "receiver",
             ReceiverBlock::new,
-            AbstractBlock.Settings.copy(LASER)
+            AbstractBlock.Settings.copy(LASER).mapColor(MapColor.BLACK)
     );
 
     public static final Block LENS = registerBlock(
             "lens",
             LensBlock::new,
-            AbstractBlock.Settings.copy(RECEIVER)
+            AbstractBlock.Settings.copy(RECEIVER).nonOpaque()
     );
 
     @SuppressWarnings("SameParameterValue")

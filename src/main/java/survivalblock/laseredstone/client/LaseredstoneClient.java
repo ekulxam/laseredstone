@@ -16,7 +16,7 @@ public class LaseredstoneClient implements ClientModInitializer {
     public void onInitializeClient() {
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, BlockRenderLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LENS, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LENS, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LASER, BlockRenderLayer.CUTOUT_MIPPED);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, BlockRenderLayer.CUTOUT_MIPPED);
 
