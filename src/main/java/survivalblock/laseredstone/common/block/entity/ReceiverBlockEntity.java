@@ -20,7 +20,7 @@ public class ReceiverBlockEntity extends LaserInteractorBlockEntity {
     }
 
     public ReceiverBlockEntity(BlockPos pos, BlockState state) {
-        super(LaseredstoneBlockEntityTypes.RECEIVER, pos, state);
+        this(LaseredstoneBlockEntityTypes.RECEIVER, pos, state);
     }
 
     @Override
@@ -39,8 +39,15 @@ public class ReceiverBlockEntity extends LaserInteractorBlockEntity {
         }
         boolean shouldBePowered = blockEntity.receiveTicks > 0;
         if (blockState.get(ReceiverBlock.POWERED) != shouldBePowered) {
-            blockState = blockState.cycle(ReceiverBlock.POWERED);
-            world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
+            update(world, blockPos, blockState.cycle(ReceiverBlock.POWERED));
+        }
+    }
+
+    protected static void update(World world, BlockPos blockPos, BlockState blockState) {
+        world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
+        Block block = blockState.getBlock();
+        for (Direction direction : Direction.values()) {
+            world.updateNeighbors(blockPos.offset(direction), block);
         }
     }
 }
