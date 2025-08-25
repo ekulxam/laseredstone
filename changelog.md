@@ -1,2 +1,2 @@
-Laseredstone 1.0.3+1.21.8
-- Lens is now correctly non-opaque
+Laseredstone 1.0.5+1.21.8
+- Fix bugs caused by optimization not working as intended
