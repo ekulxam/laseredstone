@@ -17,10 +17,7 @@ import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -72,14 +69,5 @@ public class LaserBlock extends BlockWithEntity {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWERED);
-    }
-
-    @Override
-    protected BlockState getStateForNeighborUpdate(BlockState blockState, WorldView world, ScheduledTickView tickView, BlockPos blockPos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
-        boolean powered = world.isReceivingRedstonePower(blockPos);
-        if (powered != blockState.get(LaserBlock.POWERED)) {
-            blockState = blockState.cycle(LaserBlock.POWERED);
-        }
-        return blockState;
     }
 }

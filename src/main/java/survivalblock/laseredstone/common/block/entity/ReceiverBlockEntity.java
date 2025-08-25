@@ -20,7 +20,7 @@ public class ReceiverBlockEntity extends LaserInteractorBlockEntity {
     }
 
     public ReceiverBlockEntity(BlockPos pos, BlockState state) {
-        this(LaseredstoneBlockEntityTypes.RECEIVER, pos, state);
+        super(LaseredstoneBlockEntityTypes.RECEIVER, pos, state);
     }
 
     @Override
