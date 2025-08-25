@@ -71,12 +71,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
-        boolean powered = world.isReceivingRedstonePower(blockPos);
-        if (powered != blockState.get(LaserBlock.POWERED)) {
-            blockState = blockState.cycle(LaserBlock.POWERED);
-            world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
-        }
-        return powered;
+        return blockState.get(LaserBlock.POWERED);
     }
 
     @Override
