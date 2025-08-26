@@ -41,7 +41,17 @@ public class ReceiverBlock extends BlockWithEntity {
 
     @Override
     protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.getWeakRedstonePower(world, pos, direction);
+        if (!state.get(POWERED)) {
+            return 0;
+        }
+        if (!(world.getBlockEntity(pos) instanceof ReceiverBlockEntity receiverBlockEntity)) {
+            return 0;
+        }
+        Integer receiveTicks = receiverBlockEntity.directionToReceiveTicks.get(direction.getOpposite());
+        if (receiveTicks == null) {
+            return 0;
+        }
+        return receiveTicks > 0 ? 15 : 0;
     }
 
     @Override
