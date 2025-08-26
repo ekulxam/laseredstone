@@ -1,2 +1,2 @@
-Laseredstone 1.0.5+1.21.8
-- Fix bugs caused by optimization not working as intended
+Laseredstone 1.0.6+1.21.8
+- Receivers now emit strong redstone power in the direction(s) opposite to where they are receiving lasers
