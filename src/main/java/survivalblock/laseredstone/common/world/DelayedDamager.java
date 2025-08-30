@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneDamageTypes;
+import survivalblock.laseredstone.common.init.LaseredstoneGameRules;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
 import java.util.ArrayList;
@@ -17,7 +18,10 @@ import java.util.Set;
 /**
  * @author Ampflower
  **/
-public final class EntityUtil {
+public final class DelayedDamager {
+
+	private DelayedDamager() {
+	}
 
 	/**
 	 * Maintain a list of boxes that are currently actively damaging entities.
@@ -46,6 +50,7 @@ public final class EntityUtil {
 		final Box[] boxArray = boxes.toArray(Box[]::new);
 
 		final Box filter = encompassing(boxes);
+		final boolean multi = world.getGameRules().getBoolean(LaseredstoneGameRules.MULTI_DAMAGE);
 
 		for (final Entity entity : entities) {
 			final Box bounding = entity.getBoundingBox();
@@ -59,7 +64,9 @@ public final class EntityUtil {
 					continue;
 				}
 				entity.damage(world, source, LaserBlockEntity.getDamage(entity));
-				break;
+				if (!multi) {
+					break;
+				}
 			}
 		}
 
@@ -105,7 +112,7 @@ public final class EntityUtil {
 		final ArrayList<Entity> list = new ArrayList<>();
 
 		for (final Entity entity : world.iterateEntities()) {
-			if (EntityUtil.isVulnerableCandidate(entity)) {
+			if (DelayedDamager.isVulnerableCandidate(entity)) {
 				list.add(entity);
 			}
 		}
@@ -117,7 +124,6 @@ public final class EntityUtil {
 		return entity != null
 				&& !entity.isInvulnerable()
 				&& !entity.getType().isIn(LaseredstoneTags.LASER_PROOF)
-				// && !invulnerableEntities.contains(entity.getType())
 				&& entity.isAlive();
 	}
 }

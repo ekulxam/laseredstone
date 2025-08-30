@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
+import survivalblock.laseredstone.common.init.LaseredstoneGameRules;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -26,5 +27,7 @@ public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
         translationBuilder.add("death.attack.laseredstone.laser", "%1$s was fried by an overcharged laser");
         translationBuilder.add("death.attack.laseredstone.laser.player", "%1$s was fried by an overcharged laser whilst fighting %2$s");
         translationBuilder.add("death.attack.laseredstone.laser.item", "%1$s was fried by an overcharged laser whilst fighting %2$s using %3$s");
+        translationBuilder.add(LaseredstoneGameRules.MULTI_DAMAGE.getTranslationKey(), "Allow Taking Damage From Multiple Lasers Simultaneously");
+        translationBuilder.add("gamerule.category.laseredstone", "Laseredstone");
     }
 }

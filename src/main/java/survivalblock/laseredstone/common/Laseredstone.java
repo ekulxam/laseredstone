@@ -7,8 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
+import survivalblock.laseredstone.common.init.LaseredstoneGameRules;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
-import survivalblock.laseredstone.common.world.EntityUtil;
+import survivalblock.laseredstone.common.world.DelayedDamager;
 
 public class Laseredstone implements ModInitializer {
 	public static final String MOD_ID = "laseredstone";
@@ -20,11 +21,12 @@ public class Laseredstone implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		LaseredstoneGameRules.init();
 		LaseredstoneBlocks.init();
 		LaseredstoneItems.init();
 		LaseredstoneBlockEntityTypes.init();
 
-		ServerTickEvents.END_WORLD_TICK.register(EntityUtil::damageTick);
+		ServerTickEvents.END_WORLD_TICK.register(DelayedDamager::damageTick);
 	}
 
 	public static Identifier id(String path) {

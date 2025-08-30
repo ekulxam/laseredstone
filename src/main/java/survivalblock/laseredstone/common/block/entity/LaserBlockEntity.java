@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
-import survivalblock.laseredstone.common.world.EntityUtil;
+import survivalblock.laseredstone.common.world.DelayedDamager;
 import survivalblock.laseredstone.mixin.BeamEmitterMixin;
 
 import java.util.List;
@@ -149,7 +149,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             Vec3d center = blockPos.toCenterPos();
             Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(blockEntity.distance + 0.375));
 
-            EntityUtil.submitDamagingBox(box);
+            DelayedDamager.submitDamagingBox(box);
         }
     }
 
@@ -162,6 +162,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     public static Box expandInOneDirection(Box box, Vec3d vec3d) {
+        // there must be a better way to do this, right?
         double x = vec3d.getX();
         double y = vec3d.getY();
         double z = vec3d.getZ();
@@ -207,13 +208,14 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
         return this.color;
     }
 
+    // if there was an annotation for cursed methods, this method would have it
     public @Nullable Object superGetRenderData() {
         return super.getRenderData();
     }
 
     @Override
     public @Nullable Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
+        return BlockEntityUpdateS2CPacket.create(this); // TODO: sync laser (eventually)
     }
 
     @Override
