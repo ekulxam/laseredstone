@@ -10,5 +10,7 @@
   "gamerule.category.laseredstone": "Laseredstone",
   "gamerule.laseredstone:takeDamageFromMultipleLasers": "Allow Taking Damage From Multiple Lasers Simultaneously",
   "tag.block.laseredstone.always_allows_lasers": "Laseredstone - Always Allows Lasers",
-  "tag.block.laseredstone.always_denies_lasers": "Laseredstone - Always Denies Lasers"
+  "tag.block.laseredstone.always_denies_lasers": "Laseredstone - Always Denies Lasers",
+  "tag.damage_type.laseredstone.bypasses_creative_mode": "Laseredstone - Bypasses Creative Mode",
+  "tag.entity_type.laseredstone.laser_proof": "Laseredstone - Laser-Proof"
 }
