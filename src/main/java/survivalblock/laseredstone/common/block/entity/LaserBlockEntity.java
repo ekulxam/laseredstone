@@ -10,14 +10,12 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
@@ -30,8 +28,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
-import survivalblock.laseredstone.common.init.LaseredstoneDamageTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
+import survivalblock.laseredstone.common.world.EntityUtil;
 import survivalblock.laseredstone.mixin.BeamEmitterMixin;
 
 import java.util.List;
@@ -132,18 +130,11 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
         if (wasOff) {
             blockEntity.spawnDustParticles(world, blockPos);
         }
-        if (blockEntity.isOvercharged()) {
+        if (blockEntity.isOvercharged() && !world.isClient()) {
             Vec3d center = blockPos.toCenterPos();
             Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(blockEntity.distance + 0.375));
-            if (world instanceof ServerWorld serverWorld) {
-                DamageSource source = new DamageSource(LaseredstoneDamageTypes.getFromWorld(serverWorld, LaseredstoneDamageTypes.LASER));
-                serverWorld.iterateEntities().forEach(entity -> {
-                    if (entity == null || !entity.isAlive() || !entity.getBoundingBox().intersects(box)) {
-                        return;
-                    }
-                    entity.damage(serverWorld, source, getDamage(entity));
-                });
-            }
+
+            EntityUtil.submitDamagingBox(box);
         }
     }
 

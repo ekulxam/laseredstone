@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
@@ -57,6 +58,17 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 
 				builder(LaseredstoneTags.BYPASSES_CREATIVE_MODE)
 						.add(LaseredstoneDamageTypes.LASER);
+			}
+		});
+		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagProvider.EntityTypeTagProvider(fabricDataOutput, completableFuture) {
+			@Override
+			protected void configure(final RegistryWrapper.WrapperLookup wrapperLookup) {
+				valueLookupBuilder(LaseredstoneTags.LASER_PROOF).add(
+						EntityType.BLOCK_DISPLAY,
+						EntityType.ITEM_DISPLAY,
+						EntityType.TEXT_DISPLAY,
+						EntityType.INTERACTION
+				);
 			}
 		});
 		pack.addProvider(LaseredstoneLootTableGenerator::new);
