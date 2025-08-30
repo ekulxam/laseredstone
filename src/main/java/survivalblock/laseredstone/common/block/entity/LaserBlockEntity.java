@@ -45,6 +45,8 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
 
+    protected boolean updateRequired;
+
     // for rendering
     protected @Nullable Direction currentOutputDirection = null;
 
@@ -68,12 +70,25 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
         this.color = view.getInt("color", DEFAULT_COLOR);
     }
 
+    public void updateLaser() {
+        this.updateRequired = true;
+    }
+
     public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
-        boolean powered = world.isReceivingRedstonePower(blockPos);
-        if (powered != blockState.get(LaserBlock.POWERED)) {
-            blockState = blockState.cycle(LaserBlock.POWERED);
-            world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
+        final boolean statePowered = blockState.get(LaserBlock.POWERED);
+
+        if (!this.updateRequired) {
+            return statePowered;
         }
+
+        this.updateRequired = false;
+
+        final boolean powered = world.isReceivingRedstonePower(blockPos);
+
+        if (powered != statePowered) {
+            world.setBlockState(blockPos, blockState.with(LaserBlock.POWERED, powered), Block.NOTIFY_LISTENERS);
+        }
+
         return powered;
     }
 

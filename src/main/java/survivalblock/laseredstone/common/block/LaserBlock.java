@@ -18,6 +18,7 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -69,5 +70,23 @@ public class LaserBlock extends BlockWithEntity {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWERED);
+    }
+
+    @Override
+    protected void neighborUpdate(
+            final BlockState state,
+            final World world,
+            final BlockPos pos,
+            final Block sourceBlock,
+            @Nullable final WireOrientation wireOrientation,
+            final boolean notify
+    ) {
+        if (world.isClient()) {
+            return;
+        }
+
+        // This doubles as an anti-spam measure, and a tick delay.
+        world.getBlockEntity(pos, LaseredstoneBlockEntityTypes.LASER)
+                .ifPresent(LaserBlockEntity::updateLaser);
     }
 }
