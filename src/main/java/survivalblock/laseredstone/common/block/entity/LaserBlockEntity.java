@@ -1,5 +1,6 @@
 package survivalblock.laseredstone.common.block.entity;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeamEmitter;
@@ -33,6 +34,8 @@ import survivalblock.laseredstone.common.world.DelayedDamager;
 import survivalblock.laseredstone.mixin.BeamEmitterMixin;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class LaserBlockEntity extends LaserInteractorBlockEntity implements BeamEmitter {
 
@@ -42,6 +45,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     public static final int MAX_DISTANCE = 16;
     public static final int DEFAULT_DISTANCE = -1;
 
+    /*? =1.21.8 {*/ List<BeamSegment> renderSegments; /*?}*/
     protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
 
@@ -108,33 +112,37 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     public static <T extends LaserBlockEntity> void tick(World world, BlockPos blockPos, BlockState blockState, T blockEntity) {
-        if (blockEntity instanceof MirrorBlockEntity mirrorBlockEntity) {
-            mirrorBlockEntity.decrementDeflectionTicks();
-        }
-        if (!blockEntity.canLaser(world, blockPos, blockState)) {
-            if (blockEntity.distance > DEFAULT_DISTANCE) {
-                blockEntity.spawnDustParticles(world, blockPos);
+        blockEntity.tick(world, blockPos, blockState);
+    }
+
+    public void tick(World world, BlockPos blockPos, BlockState blockState) {
+        this.tickLaser(world, blockPos, blockState, () -> this.getOutputDirection(world, blockPos, blockState));
+    }
+
+    protected final void tickLaser(World world, BlockPos blockPos, BlockState blockState, Supplier<Direction> direction) {
+        if (!this.canLaser(world, blockPos, blockState)) {
+            if (this.distance > DEFAULT_DISTANCE) {
+                this.spawnDustParticles(world, blockPos);
             }
-            blockEntity.distance = DEFAULT_DISTANCE;
-            blockEntity.currentOutputDirection = null;
+            this.distance = DEFAULT_DISTANCE;
+            this.currentOutputDirection = null;
             return;
         }
-        boolean wasOff = blockEntity.distance == DEFAULT_DISTANCE;
-        Direction direction = blockEntity.getOutputDirection(world, blockPos, blockState);
-        blockEntity.currentOutputDirection = direction;
-        Vec3i vec3i = direction.getVector();
+        boolean wasOff = this.distance == DEFAULT_DISTANCE;
+        this.currentOutputDirection = direction.get();
+        Vec3i vec3i = this.currentOutputDirection.getVector();
         BlockPos mirrorPos;
         BlockState mirrorState;
         for (int i = 1; i <= MAX_DISTANCE; i++) {
-            blockEntity.distance = i - 1;
+            this.distance = i - 1;
             mirrorPos = blockPos.add(vec3i.multiply(i));
             mirrorState = world.getBlockState(mirrorPos);
             if (mirrorState.isIn(LaseredstoneTags.ALWAYS_DENIES_LASERS)) {
                 break;
             }
             if (world.getBlockEntity(mirrorPos) instanceof LaserInteractorBlockEntity interactor) {
-                if (interactor.receiveLaser(direction, world, mirrorPos, mirrorState, blockEntity)) {
-                    blockEntity.distance++;
+                if (interactor.receiveLaser(this.currentOutputDirection, world, mirrorPos, mirrorState, this)) {
+                    this.distance++;
                 }
                 break;
             }
@@ -143,11 +151,11 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
             }
         }
         if (wasOff) {
-            blockEntity.spawnDustParticles(world, blockPos);
+            this.spawnDustParticles(world, blockPos);
         }
-        if (blockEntity.isOvercharged() && !world.isClient()) {
+        if (this.isOvercharged() && !world.isClient()) {
             Vec3d center = blockPos.toCenterPos();
-            Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(blockEntity.distance + 0.375));
+            Box box = expandInOneDirection(new Box(center.subtract(0.125), center.add(0.125)), Vec3d.of(vec3i).multiply(this.distance + 0.375));
 
             DelayedDamager.submitDamagingBox(box);
         }
@@ -243,24 +251,28 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     @Override
     public List<BeamSegment> getBeamSegments() {
-        if (this.distance <= DEFAULT_DISTANCE || this.currentOutputDirection == null) {
+        /*? =1.21.8 {*/ if (this.renderSegments != null) return this.renderSegments; /*?}*/
+        return this.getBeamSegments(this.currentOutputDirection, this.distance);
+    }
+
+    public List<BeamSegment> getBeamSegments(Direction direction, int distance) {
+        if (distance <= DEFAULT_DISTANCE || direction == null) {
             return List.of();
         }
         BeamSegment beam = new BeamSegment(this.color);
-        ((BeamEmitterMixin.BeamSegmentMixin) beam).laseredstone$setHeight(this.distance + 1);
+        ((BeamEmitterMixin.BeamSegmentMixin) beam).laseredstone$setHeight(distance + 1);
         return List.of(beam);
     }
 
-    public @Nullable Direction getCurrentOutputDirection() {
-        return this.currentOutputDirection;
+    public Map<Direction, Integer> getDirectionToDistanceMap() {
+        if (this.currentOutputDirection == null) {
+            return ImmutableMap.of();
+        }
+        return ImmutableMap.of(this.currentOutputDirection, this.distance);
     }
 
     public int getColor() {
         return this.color;
-    }
-
-    public int getDistance() {
-        return this.distance;
     }
 
     public void setOvercharged(boolean overcharged) {
@@ -269,4 +281,10 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     public boolean isOvercharged() {
         return false;
     }
+
+    //? if =1.21.8 {
+    public void setRenderingSegments(List<BeamSegment> beamSegments) {
+        this.renderSegments = beamSegments;
+    }
+    //?}
 }

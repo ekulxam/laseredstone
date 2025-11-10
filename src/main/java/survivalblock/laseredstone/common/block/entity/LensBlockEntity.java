@@ -5,6 +5,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LensBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
@@ -31,5 +32,10 @@ public class LensBlockEntity extends MirrorBlockEntity {
     @Override
     public boolean isOvercharged() {
         return true;
+    }
+
+    @Override
+    public @Nullable Object getRenderData() {
+        return this.superGetRenderData();
     }
 }

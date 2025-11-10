@@ -52,6 +52,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 
 		registerRedstone(blockStateModelGenerator, LaseredstoneBlocks.RECEIVER);
 		registerOrientableWithItem(blockStateModelGenerator, LaseredstoneBlocks.LENS);
+        registerOrientableRedstone(blockStateModelGenerator, LaseredstoneBlocks.DIFFUSER, ModelIds.getBlockModelId(LaseredstoneBlocks.DIFFUSER));
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 		generator.blockStateCollector
 				.accept(
 						VariantsBlockModelDefinitionCreator.of(orientable, weightedVariant)
-								./*? =1.21.8 {*/ /*coordinate *//*?} else {*/ apply /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ coordinate /*?} else {*/ /*apply *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 		generator.registerItemModel(orientable.asItem(), modelId);
 	}
@@ -104,7 +105,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 				.accept(
 						VariantsBlockModelDefinitionCreator.of(orientable)
 								.with(createBooleanModelMap(Properties.POWERED, weightedVariant2, weightedVariant))
-								./*? =1.21.8 {*/ /*coordinate *//*?} else {*/ apply /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ coordinate /*?} else {*/ /*apply *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 	}
 

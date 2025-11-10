@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:glass",
+    "G": "#c:gems",
+    "|": "minecraft:netherite_ingot"
+  },
+  "pattern": [
+    "|#|",
+    "|G|",
+    "|#|"
+  ],
+  "result": {
+    "count": 1,
+    "id": "laseredstone:lens"
+  }
+}

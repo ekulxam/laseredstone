@@ -11,6 +11,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import survivalblock.laseredstone.common.Laseredstone;
+import survivalblock.laseredstone.common.block.DiffuserBlock;
 import survivalblock.laseredstone.common.block.HorizontalHorizontalMirrorBlock;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.block.HorizontalVerticalMirrorBlock;
@@ -56,6 +57,12 @@ public class LaseredstoneBlocks {
     public static final Block LENS = registerBlock(
             "lens",
             LensBlock::new,
+            AbstractBlock.Settings.copy(RECEIVER).nonOpaque()
+    );
+
+    public static final Block DIFFUSER = registerBlock(
+            "diffuser",
+            DiffuserBlock::new,
             AbstractBlock.Settings.copy(RECEIVER).nonOpaque()
     );
 

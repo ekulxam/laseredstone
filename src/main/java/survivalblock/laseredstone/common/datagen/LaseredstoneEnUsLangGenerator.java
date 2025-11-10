@@ -22,6 +22,7 @@ public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
         translationBuilder.add(LaseredstoneBlocks.LASER, "Laser");
         translationBuilder.add(LaseredstoneBlocks.RECEIVER, "Receiver");
         translationBuilder.add(LaseredstoneBlocks.LENS, "Lens");
+        translationBuilder.add(LaseredstoneBlocks.DIFFUSER, "Diffuser");
         translationBuilder.add(LaseredstoneTags.ALWAYS_ALLOWS_LASERS, "Laseredstone - Always Allows Lasers");
         translationBuilder.add(LaseredstoneTags.ALWAYS_DENIES_LASERS, "Laseredstone - Always Denies Lasers");
         translationBuilder.add(LaseredstoneTags.BYPASSES_CREATIVE_MODE, "Laseredstone - Bypasses Creative Mode");

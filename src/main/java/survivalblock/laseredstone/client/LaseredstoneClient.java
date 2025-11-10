@@ -19,6 +19,7 @@ public class LaseredstoneClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LENS, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LASER, BlockRenderLayer.CUTOUT_MIPPED);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, BlockRenderLayer.CUTOUT_MIPPED);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.DIFFUSER, BlockRenderLayer.CUTOUT_MIPPED);
 
         ColorProviderRegistry.BLOCK.register(((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) {
@@ -27,11 +28,12 @@ public class LaseredstoneClient implements ClientModInitializer {
             return world.getBlockEntityRenderData(pos) instanceof Integer integer ?
                     integer :
                     LaserBlockEntity.DEFAULT_COLOR;
-        }), LaseredstoneBlocks.LASER);
+        }), LaseredstoneBlocks.LASER, LaseredstoneBlocks.DIFFUSER);
 
         BlockEntityRendererFactories.register(LaseredstoneBlockEntityTypes.LASER, LaserBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(LaseredstoneBlockEntityTypes.HORIZONTAL_VERTICAL_MIRROR, LaserBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(LaseredstoneBlockEntityTypes.HORIZONTAL_HORIZONTAL_MIRROR, LaserBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(LaseredstoneBlockEntityTypes.LENS, LaserBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(LaseredstoneBlockEntityTypes.DIFFUSER, LaserBlockEntityRenderer::new);
     }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:quartz",
+    "g": "minecraft:glass"
+  },
+  "pattern": [
+    "  #",
+    " g#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "laseredstone:horizontal_vertical_mirror"
+  }
+}

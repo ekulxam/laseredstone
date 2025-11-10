@@ -3,6 +3,7 @@ package survivalblock.laseredstone.common.block.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class ActualMirrorBlockEntity extends MirrorBlockEntity {
 
@@ -20,5 +21,10 @@ public abstract class ActualMirrorBlockEntity extends MirrorBlockEntity {
     @Override
     public boolean isOvercharged() {
         return this.overcharged;
+    }
+
+    @Override
+    public @Nullable Object getRenderData() {
+        return this.superGetRenderData();
     }
 }

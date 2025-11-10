@@ -37,7 +37,8 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 						LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR,
 						LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR,
 						LaseredstoneBlocks.LASER,
-						LaseredstoneBlocks.RECEIVER);
+						LaseredstoneBlocks.RECEIVER,
+                        LaseredstoneBlocks.DIFFUSER);
 				valueLookupBuilder(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)
 						.add(Blocks.BEDROCK);
 				valueLookupBuilder(LaseredstoneTags.ALWAYS_DENIES_LASERS)

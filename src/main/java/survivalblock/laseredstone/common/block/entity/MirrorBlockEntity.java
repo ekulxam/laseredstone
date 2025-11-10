@@ -24,6 +24,12 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
         return this.deflectionTicks > 0 && this.inputDirection != null;
     }
 
+    @Override
+    public void tick(World world, BlockPos blockPos, BlockState blockState) {
+        this.decrementDeflectionTicks();
+        super.tick(world, blockPos, blockState);
+    }
+
     public void decrementDeflectionTicks() {
         if (this.deflectionTicks > 0) {
             this.deflectionTicks--;
@@ -61,10 +67,5 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
     @Override
     public boolean shouldSaveColor() {
         return false;
-    }
-
-    @Override
-    public @Nullable Object getRenderData() {
-        return this.superGetRenderData();
     }
 }

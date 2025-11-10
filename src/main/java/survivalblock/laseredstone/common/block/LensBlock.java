@@ -49,7 +49,7 @@ public class LensBlock extends BlockWithEntity {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, LaseredstoneBlockEntityTypes.LENS, LaserBlockEntity::tick);
+        return validateTicker(type, LaseredstoneBlockEntityTypes.LENS, LensBlockEntity::tick);
     }
 
     @Override

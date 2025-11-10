@@ -7,6 +7,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import survivalblock.laseredstone.common.Laseredstone;
+import survivalblock.laseredstone.common.block.DiffuserBlock;
+import survivalblock.laseredstone.common.block.entity.DiffuserBlockEntity;
 import survivalblock.laseredstone.common.block.entity.HorizontalHorizontalMirrorBlockEntity;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.block.entity.HorizontalVerticalMirrorBlockEntity;
@@ -30,6 +32,9 @@ public class LaseredstoneBlockEntityTypes {
 
     public static final BlockEntityType<LensBlockEntity> LENS =
             register("lens", LensBlockEntity::new, LaseredstoneBlocks.LENS);
+
+    public static final BlockEntityType<DiffuserBlockEntity> DIFFUSER =
+            register("diffuser", DiffuserBlockEntity::new, LaseredstoneBlocks.DIFFUSER);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(
             String name,
