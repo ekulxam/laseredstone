@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.CopyComponentsLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
@@ -39,7 +40,7 @@ public class LaseredstoneLootTableGenerator extends FabricBlockLootTableProvider
                                         .with(
                                                 ItemEntry.builder(drop)
                                                         .apply(
-                                                                CopyComponentsLootFunction.builder(CopyComponentsLootFunction.Source.BLOCK_ENTITY)
+                                                                CopyComponentsLootFunction./*? =1.21.8 {*/ /*builder(CopyComponentsLootFunction.Source.BLOCK_ENTITY) *//*?} else {*/ blockEntity(LootContextParameters.BLOCK_ENTITY) /*?}*/
                                                                         .include(DataComponentTypes.DYED_COLOR)
                                                         )
                                         )

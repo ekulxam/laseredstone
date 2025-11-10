@@ -185,7 +185,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     public void spawnDustParticles(World world, BlockPos blockPos) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             return;
         }
         if (this.currentOutputDirection == null) {

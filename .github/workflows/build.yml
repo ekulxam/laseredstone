@@ -1,4 +1,4 @@
-name: Build
+name: build
 
 on:
   release:
@@ -10,6 +10,7 @@ on:
     tags-ignore:
       - '**'
   pull_request:
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -43,21 +44,21 @@ jobs:
       - name: Attest Build Provenance
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: 'build/libs/*.jar, !build/libs/*-sources.jar'
+          subject-path: '**/build/libs/*.jar, !**/build/libs/*-sources.jar'
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
           path: |
-            build/libs/*.jar
-            !build/libs/*-sources.jar
+            **/build/libs/*.jar
+            !**/build/libs/*-sources.jar
 
       - name: Github Publish
         if: github.event_name == 'release' && github.event.action == 'published'
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'build/libs/*.jar;!build/libs/*-sources.jar'
+          files: '**/build/libs/*.jar;!**/build/libs/*-sources.jar'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Modrinth Publish
