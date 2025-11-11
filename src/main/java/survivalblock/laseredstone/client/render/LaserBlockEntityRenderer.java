@@ -126,6 +126,7 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
             /*state.beamSegments = state.directionToSegmentsMap.get(output);
              *///?}
             super.render(/*? =1.21.8 {*/ laser, tickProgress, matrices, vertexConsumers, light, overlay, cameraPos /*?} else {*/ /*state, matrices, queue, cameraState *//*?}*/);
+            /*? =1.21.8 {*/ laser.setRenderingSegments(null); /*?}*/
             matrices.pop();
 
             if (/*? =1.21.8 {*/ laser.isOvercharged() /*?} else {*/ /*state.overcharged *//*?}*/ && MinecraftClient.getInstance()./*? =1.21.8 {*/ getEntityRenderDispatcher().shouldRenderHitboxes() /*?} else {*/ /*debugHudEntryList.isEntryVisible(DebugHudEntries.ENTITY_HITBOXES) *//*?}*/) {
