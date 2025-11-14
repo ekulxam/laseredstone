@@ -1,8 +1,15 @@
 package survivalblock.laseredstone.common.block.entity;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Keyable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -18,6 +25,9 @@ import java.util.Map;
 public class DiffuserBlockEntity extends MirrorBlockEntity {
 
     public static final Direction[] VANILLA_DIRECTIONS = new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+
+    public static final Codec<Map<Direction, Integer>> OUTPUTS_CODEC = Codec.simpleMap(Direction.CODEC, Codec.INT, StringIdentifiable.toKeyable(VANILLA_DIRECTIONS)).codec();
+
     protected final EnumMap<Direction, Integer> directionToDistanceMap = new EnumMap<>(Direction.class);
 
     public DiffuserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -88,5 +98,24 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
     @Override
     public boolean shouldSaveColor() {
         return true;
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
+        NbtCompound nbt = super.toInitialChunkDataNbt(registries);
+        nbt.put("directionToDistanceMap", OUTPUTS_CODEC, this.directionToDistanceMap);
+        return nbt;
+    }
+
+    @Override
+    protected void readData(ReadView view) {
+        super.readData(view);
+
+        if (view.contains("directionToDistanceMap")) {
+            view.read("directionToDistanceMap", OUTPUTS_CODEC).ifPresent(map -> {
+                this.directionToDistanceMap.clear();
+                this.directionToDistanceMap.putAll(map);
+            });
+        }
     }
 }

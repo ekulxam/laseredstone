@@ -2,6 +2,9 @@ package survivalblock.laseredstone.common.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -47,6 +50,28 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
 
     @Override
     public abstract Direction getOutputDirection(World world, BlockPos blockPos, BlockState blockState);
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
+        NbtCompound nbt = super.toInitialChunkDataNbt(registries);
+        nbt.putInt("deflectionTicks", this.deflectionTicks);
+        if (this.inputDirection != null) {
+            nbt.put("inputDirection", Direction.CODEC, this.inputDirection);
+        }
+        return nbt;
+    }
+
+    @Override
+    protected void readData(ReadView view) {
+        super.readData(view);
+
+        if (view.contains("deflectionTicks")) {
+            this.deflectionTicks = view.getInt("deflectionTicks", 0);
+        }
+        if (view.contains("inputDirection")) {
+            this.inputDirection = view.read("inputDirection", Direction.CODEC).orElse(null);
+        }
+    }
 
     @Override
     public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {

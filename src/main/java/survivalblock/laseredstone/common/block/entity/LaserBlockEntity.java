@@ -223,7 +223,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     @Override
     public @Nullable Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this); // TODO: sync laser (eventually)
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override
