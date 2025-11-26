@@ -5,10 +5,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.entity.BeamEmitter;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
-/*? >=1.21.9 {*/ /*import net.minecraft.client.render.block.entity.state.BeaconBlockEntityRenderState; *//*?}*/
+//? if >=1.21.9
+/*import net.minecraft.client.render.block.entity.state.BeaconBlockEntityRenderState;*/
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-/*? >=1.21.9 {*/ /*import survivalblock.laseredstone.client.render.state.LaserBlockEntityRenderState; *//*?}*/
+//? if >=1.21.9
+/*import survivalblock.laseredstone.client.render.state.LaserBlockEntityRenderState;*/
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 
 @Mixin(BeaconBlockEntityRenderer.class)
