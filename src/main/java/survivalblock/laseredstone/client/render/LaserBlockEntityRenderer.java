@@ -5,6 +5,8 @@ import net.minecraft.block.entity.BeamEmitter;
 import net.minecraft.client.MinecraftClient;
 /*? >=1.21.9 {*/ import net.minecraft.client.gui.hud.debug.DebugHudEntries; /*?}*/
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
@@ -142,10 +144,50 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
                 //? if =1.21.8 {
                 /*VertexRendering.drawBox(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), box, red, green, blue, 1);
                  *///?} else {
-                queue.submitCustom(matrices, RenderLayer.LINES, (matricesEntry, vertexConsumer) -> VertexRendering.drawBox(matricesEntry, vertexConsumer, box, red, green, blue, 1));
+                queue.submitCustom(matrices, /*? <1.21.11 {*/ /*RenderLayer *//*?} else {*/ RenderLayers /*?}*/.LINES, (matricesEntry, vertexConsumer) -> drawBox(matricesEntry, vertexConsumer, box, red, green, blue, 1));
                 //?}
                 matrices.pop();
             }
         }
     }
+
+    //? if >1.21.8 {
+    public void drawBox(MatrixStack.Entry entry, VertexConsumer vertexConsumers, Box box, float red, float green, float blue, float alpha) {
+        //? if <1.21.11
+        /*VertexRendering.drawBox(entry, vertexConsumers, box, red, green, blue, 1);*/
+        //? if >=1.21.11 {
+        float width = Math.max(2.5F, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / 1920.0F * 2.5F);
+        float f = (float) box.minX;
+        float g = (float) box.minY;
+        float h = (float) box.minZ;
+        float i = (float) box.maxX;
+        float j = (float) box.maxY;
+        float k = (float) box.maxZ;
+        vertexConsumers.vertex(entry, f, g, h).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, h).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, g, h).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, h).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, g, h).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, g, k).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, h).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, h).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, h).color(red, green, blue, alpha).normal(entry, -1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, h).color(red, green, blue, alpha).normal(entry, -1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, h).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, k).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, k).color(red, green, blue, alpha).normal(entry, 0.0F, -1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, g, k).color(red, green, blue, alpha).normal(entry, 0.0F, -1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, g, k).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, k).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, k).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, -1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, h).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, -1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, f, j, k).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, k).color(red, green, blue, alpha).normal(entry, 1.0F, 0.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, g, k).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, k).color(red, green, blue, alpha).normal(entry, 0.0F, 1.0F, 0.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, h).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        vertexConsumers.vertex(entry, i, j, k).color(red, green, blue, alpha).normal(entry, 0.0F, 0.0F, 1.0F).lineWidth(width);
+        //?}
+    }
+    //?}
 }

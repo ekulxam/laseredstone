@@ -9,7 +9,7 @@
   "death.attack.laseredstone.laser.item": "%1$s was fried by an overcharged laser whilst fighting %2$s using %3$s",
   "death.attack.laseredstone.laser.player": "%1$s was fried by an overcharged laser whilst fighting %2$s",
   "gamerule.category.laseredstone": "Laseredstone",
-  "gamerule.laseredstone:takeDamageFromMultipleLasers": "Allow Taking Damage From Multiple Lasers Simultaneously",
+  "gamerule.laseredstone:take_damage_from_multiple_lasers": "Allow Taking Damage From Multiple Lasers Simultaneously",
   "tag.block.laseredstone.always_allows_lasers": "Laseredstone - Always Allows Lasers",
   "tag.block.laseredstone.always_denies_lasers": "Laseredstone - Always Denies Lasers",
   "tag.damage_type.laseredstone.bypasses_creative_mode": "Laseredstone - Bypasses Creative Mode",

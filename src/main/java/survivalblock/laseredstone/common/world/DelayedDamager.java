@@ -50,7 +50,7 @@ public final class DelayedDamager {
 		final Box[] boxArray = boxes.toArray(Box[]::new);
 
 		final Box filter = encompassing(boxes);
-		final boolean multi = world.getGameRules().getBoolean(LaseredstoneGameRules.MULTI_DAMAGE);
+		final boolean multi = world.getGameRules()./*? <1.21.11 {*/ /*getBoolean *//*?} else {*/ getValue /*?}*/(LaseredstoneGameRules.MULTI_DAMAGE);
 
 		for (final Entity entity : entities) {
 			final Box bounding = entity.getBoundingBox();

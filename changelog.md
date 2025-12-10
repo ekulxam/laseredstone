@@ -1,6 +1,5 @@
-Laseredstone 1.1.0
-- Added the Diffuser, the First Multidirectional Laser
-  - One face receives a laser input, and all other faces output the original laser
-  - Un-overcharges the output lasers
-  - The color of the Diffuser is determined by the color of the input laser
-- Fixed smooth stone rotation on laser model
+Laseredstone 1.1.1
+- Port to 1.21.11
+- Laser recipe now uses items from the `laseredstone:laser_powerer` tag
+  - By default, this only contains the vanilla beacon
+- Renamed gamerule `laseredstone:takeDamageFromMultipleLasers` to `laseredstone:take_damage_from_multiple_lasers`

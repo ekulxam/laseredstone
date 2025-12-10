@@ -1,16 +1,6 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_beacon": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:beacon"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_gem": {
       "conditions": {
         "items": [
@@ -31,6 +21,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_laser_powerer": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#laseredstone:laser_powerer"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "laseredstone:laser"
@@ -41,7 +41,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_beacon",
+      "has_laser_powerer",
       "has_iron_block",
       "has_gem"
     ]

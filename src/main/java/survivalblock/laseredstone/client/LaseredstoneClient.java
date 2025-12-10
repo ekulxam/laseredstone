@@ -17,9 +17,10 @@ public class LaseredstoneClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LENS, BlockRenderLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LASER, BlockRenderLayer.CUTOUT_MIPPED);
-        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, BlockRenderLayer.CUTOUT_MIPPED);
-        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.DIFFUSER, BlockRenderLayer.CUTOUT_MIPPED);
+        BlockRenderLayer mipmapped = BlockRenderLayer./*? <1.21.11 {*/ /*CUTOUT_MIPPED *//*?} else {*/ CUTOUT /*?}*/;
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LASER, mipmapped);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, mipmapped);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.DIFFUSER, mipmapped);
 
         ColorProviderRegistry.BLOCK.register(((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) {

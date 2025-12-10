@@ -1,0 +1,9 @@
+{
+  "values": [
+    "laseredstone:horizontal_vertical_mirror",
+    "laseredstone:horizontal_horizontal_mirror",
+    "laseredstone:laser",
+    "laseredstone:receiver",
+    "laseredstone:diffuser"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "laseredstone:block/horizontal_vertical_mirror",
+      "x": 90
+    },
+    "facing=north": {
+      "model": "laseredstone:block/horizontal_vertical_mirror",
+      "x": 90,
+      "y": 270
+    },
+    "facing=south": {
+      "model": "laseredstone:block/horizontal_vertical_mirror",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "laseredstone:block/horizontal_vertical_mirror",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

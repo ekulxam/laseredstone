@@ -10,6 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
+import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -56,10 +57,10 @@ public class LaseredstoneRecipeGenerator extends FabricRecipeProvider {
                         .pattern("|#|")
                         .pattern("#E#")
                         .pattern("|#|")
-                        .input('E', Blocks.BEACON)
+                        .input('E', LaseredstoneTags.LASER_POWERER)
                         .input('|', Blocks.IRON_BLOCK)
                         .input('#', ConventionalItemTags.GEMS)
-                        .criterion(hasItem(Blocks.BEACON), conditionsFromItem(Blocks.BEACON))
+                        .criterion("has_laser_powerer", conditionsFromTag(LaseredstoneTags.LASER_POWERER))
                         .criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK))
                         .criterion("has_gem", conditionsFromTag(ConventionalItemTags.GEMS))
                         .offerTo(this.exporter);

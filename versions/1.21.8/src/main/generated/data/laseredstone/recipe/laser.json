@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "#": "#c:gems",
-    "E": "minecraft:beacon",
+    "E": "#laseredstone:laser_powerer",
     "|": "minecraft:iron_block"
   },
   "pattern": [
