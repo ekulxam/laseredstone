@@ -3,7 +3,7 @@ import java.io.FileReader
 import org.gradle.jvm.tasks.Jar
 
 plugins {
-    id("fabric-loom") version "1.12-SNAPSHOT"
+    id("fabric-loom") version "1.14-SNAPSHOT"
     id("maven-publish")
     id("com.modrinth.minotaur") version "2.+"
     kotlin("jvm") version "2.2.10"

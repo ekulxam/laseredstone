@@ -26,6 +26,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LaserBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -45,7 +46,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     public static final int MAX_DISTANCE = 16;
     public static final int DEFAULT_DISTANCE = -1;
 
-    /*? =1.21.8 {*/ List<BeamSegment> renderSegments; /*?}*/
+    /*? =1.21.8 {*/ /*List<BeamSegment> renderSegments; *//*?}*/
     protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
 
@@ -217,6 +218,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     // if there was an annotation for cursed methods, this method would have it
+    @Contract(value = "violated")
     public @Nullable Object superGetRenderData() {
         return super.getRenderData();
     }
@@ -251,7 +253,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
 
     @Override
     public List<BeamSegment> getBeamSegments() {
-        /*? =1.21.8 {*/ if (this.renderSegments != null) return this.renderSegments; /*?}*/
+        /*? =1.21.8 {*/ /*if (this.renderSegments != null) return this.renderSegments; *//*?}*/
         return this.getBeamSegments(this.currentOutputDirection, this.distance);
     }
 
@@ -283,8 +285,8 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     }
 
     //? if =1.21.8 {
-    public void setRenderingSegments(List<BeamSegment> beamSegments) {
+    /*public void setRenderingSegments(List<BeamSegment> beamSegments) {
         this.renderSegments = beamSegments;
     }
-    //?}
+    *///?}
 }
