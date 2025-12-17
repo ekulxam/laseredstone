@@ -4,6 +4,7 @@
     "laseredstone:horizontal_horizontal_mirror",
     "laseredstone:laser",
     "laseredstone:receiver",
+    "laseredstone:lens",
     "laseredstone:diffuser"
   ]
 }

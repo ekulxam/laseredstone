@@ -101,7 +101,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beam
     public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
         if (!world.isClient()) {
             Vec3d explosion = blockPos.toCenterPos();
-            world.breakBlock(blockPos, false);
+            world.breakBlock(blockPos, true);
             world.createExplosion(null, explosion.x, explosion.y, explosion.z, 6F, World.ExplosionSourceType.NONE);
         }
         return false;
