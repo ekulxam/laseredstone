@@ -1,12 +1,14 @@
 package survivalblock.laseredstone.client;
 
 import net.fabricmc.api.ClientModInitializer;
-//? <26
-//import net.fabricmc.fabric.api.client.rendering.v1.ChunkSectionLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
-import net.minecraft.client.color.block.BlockTintSource;
+//? <26 {
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+//?} else {
+/*import net.minecraft.client.color.block.BlockTintSource;
+*///?}
 //~ if >=26 'net.minecraft.world.level.BlockAndTintGetter' -> 'net.minecraft.client.renderer.block.BlockAndTintGetter'
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
@@ -24,14 +26,14 @@ public class LaseredstoneClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         //? <26 {
-        /*ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, ChunkSectionLayer.CUTOUT);
-        ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, ChunkSectionLayer.CUTOUT);
-        ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.LENS, ChunkSectionLayer.CUTOUT);
-        ChunkSectionLayer mipmapped = ChunkSectionLayer./^? <1.21.11 {^/ /^CUTOUT_MIPPED ^//^?} else {^/ CUTOUT /^?}^/;
-        ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.LASER, mipmapped);
-        ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, mipmapped);
-        ChunkSectionLayerMap.putBlock(LaseredstoneBlocks.DIFFUSER, mipmapped);
-        *///?}
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, ChunkSectionLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, ChunkSectionLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LENS, ChunkSectionLayer.CUTOUT);
+        ChunkSectionLayer mipmapped = ChunkSectionLayer./*? <1.21.11 {*/ CUTOUT_MIPPED /*?} else {*/ /*CUTOUT *//*?}*/;
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.LASER, mipmapped);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.RECEIVER, mipmapped);
+        BlockRenderLayerMap.putBlock(LaseredstoneBlocks.DIFFUSER, mipmapped);
+        //?}
 
         registerBlockColors(LaserBlockEntity.DEFAULT_COLOR, ((state, world, pos) -> {
             if (world == null || pos == null) {
@@ -49,11 +51,12 @@ public class LaseredstoneClient implements ClientModInitializer {
         BlockEntityRenderers.register(LaseredstoneBlockEntityTypes.DIFFUSER, LaserBlockEntityRenderer::new);
     }
 
+    @SuppressWarnings("unused")
     private static void registerBlockColors(int defaultColor, BlockColorProvider provider, Block... blocks) {
         //? if <26 {
-        /*BlockColorRegistry.BLOCK.register((state, world, pos, index) -> provider.color(state, world, pos), blocks);
-        *///?} else {
-        BlockColorRegistry.register(List.of(new BlockTintSource() {
+        ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> provider.color(state, world, pos), blocks);
+        //?} else {
+        /*ColorProviderRegistry.register(List.of(new BlockTintSource() {
             @Override
             public int color(BlockState state) {
                 return defaultColor;
@@ -64,7 +67,7 @@ public class LaseredstoneClient implements ClientModInitializer {
                 return provider.color(state, world, pos);
             }
         }));
-        //?}
+        *///?}
     }
 
     @FunctionalInterface

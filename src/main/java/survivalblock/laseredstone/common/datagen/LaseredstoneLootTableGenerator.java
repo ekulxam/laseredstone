@@ -1,7 +1,7 @@
 package survivalblock.laseredstone.common.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.block.Block;
@@ -15,9 +15,9 @@ import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class LaseredstoneLootTableGenerator extends FabricBlockLootSubProvider {
+public class LaseredstoneLootTableGenerator extends FabricBlockLootTableProvider {
 
-    protected LaseredstoneLootTableGenerator(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    protected LaseredstoneLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 
@@ -41,7 +41,7 @@ public class LaseredstoneLootTableGenerator extends FabricBlockLootSubProvider {
                                         .add(
                                                 LootItem.lootTableItem(drop)
                                                         .apply(
-                                                                CopyComponentsFunction./*? =1.21.8 {*/ /*copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY) *//*?} else {*/ copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY) /*?}*/
+                                                                CopyComponentsFunction./*? =1.21.8 {*/ copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY) /*?} else {*/ /*copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY) *//*?}*/
                                                                         .include(DataComponents.DYED_COLOR)
                                                         )
                                         )

@@ -3,7 +3,7 @@ package survivalblock.laseredstone.common.init;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,7 +69,7 @@ public class LaseredstoneBlocks {
 
     @SuppressWarnings("SameParameterValue")
     private static <T extends Block> T registerBlock(String name, Function<BlockBehaviour.Properties, T> blockFromSettings, BlockBehaviour.Properties settings) {
-        Identifier id = Laseredstone.id(name);
+        ResourceLocation id = Laseredstone.id(name);
         return Registry.register(BuiltInRegistries.BLOCK, id, blockFromSettings.apply(settings.setId(ResourceKey.create(Registries.BLOCK, id))));
     }
 

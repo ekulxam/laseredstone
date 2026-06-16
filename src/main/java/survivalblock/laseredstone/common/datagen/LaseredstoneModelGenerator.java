@@ -1,7 +1,7 @@
 package survivalblock.laseredstone.common.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -12,12 +12,12 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 
 //? if >=26 {
-import net.minecraft.client.renderer.block.dispatch.VariantMutator;
-//?} else {
-/*import net.minecraft.client.renderer.block.model.VariantMutator;
-*///?}
+/*import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+*///?} else {
+import net.minecraft.client.renderer.block.model.VariantMutator;
+//?}
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -37,21 +37,21 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 			.select(Direction.WEST, Y_ROT_270)
 			.select(Direction.EAST, Y_ROT_90);
 
-	public LaseredstoneModelGenerator(FabricPackOutput output) {
+	public LaseredstoneModelGenerator(FabricDataOutput output) {
 		super(output);
 	}
 
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-		Identifier hvModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR);
+		ResourceLocation hvModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR);
 		blockStateModelGenerator.blockStateOutput.accept(createHVBlockState(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR, hvModel));
 		blockStateModelGenerator.registerSimpleItemModel(LaseredstoneItems.HORIZONTAL_VERTICAL_MIRROR, hvModel);
 
-        Identifier hhModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
+        ResourceLocation hhModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
 		blockStateModelGenerator.blockStateOutput.accept(createHHBlockState(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR, hvModel));
 		blockStateModelGenerator.registerSimpleItemModel(LaseredstoneItems.HORIZONTAL_HORIZONTAL_MIRROR, hvModel);
 
-        Identifier laserModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.LASER);
+        ResourceLocation laserModel = ModelLocationUtils.getModelLocation(LaseredstoneBlocks.LASER);
 		registerOrientableRedstone(blockStateModelGenerator, LaseredstoneBlocks.LASER, laserModel);
 		blockStateModelGenerator.registerSimpleTintedItemModel(LaseredstoneBlocks.LASER, laserModel, new Dye(LaserBlockEntity.DEFAULT_COLOR));
 
@@ -65,7 +65,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 
 	}
 
-	public static BlockModelDefinitionGenerator createHVBlockState(Block stairsBlock, Identifier modelId) {
+	public static BlockModelDefinitionGenerator createHVBlockState(Block stairsBlock, ResourceLocation modelId) {
 		MultiVariant straightModel = plainVariant(modelId);
 		return MultiVariantGenerator.dispatch(stairsBlock)
 				.with(
@@ -81,7 +81,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 				);
 	}
 
-	public static BlockModelDefinitionGenerator createHHBlockState(Block stairsBlock, Identifier modelId) {
+	public static BlockModelDefinitionGenerator createHHBlockState(Block stairsBlock, ResourceLocation modelId) {
 		MultiVariant straightModel = plainVariant(modelId).with(X_ROT_90);
 		return MultiVariantGenerator.dispatch(stairsBlock)
 				.with(
@@ -94,29 +94,29 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 	}
 
 	public static void registerOrientableWithItem(BlockModelGenerators generator, Block orientable) {
-        Identifier modelId = ModelLocationUtils.getModelLocation(orientable);
+        ResourceLocation modelId = ModelLocationUtils.getModelLocation(orientable);
 		MultiVariant weightedVariant = plainVariant(modelId);
 		generator.blockStateOutput
 				.accept(
 						MultiVariantGenerator.dispatch(orientable, weightedVariant)
-								./*? =1.21.8 {*/ /*with *//*?} else {*/ with /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ with /*?} else {*/ /*with *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 		generator.registerSimpleItemModel(orientable.asItem(), modelId);
 	}
 
-	public static void registerOrientableRedstone(BlockModelGenerators generator, Block orientable, Identifier modelId) {
+	public static void registerOrientableRedstone(BlockModelGenerators generator, Block orientable, ResourceLocation modelId) {
 		MultiVariant weightedVariant = plainVariant(modelId);
 		MultiVariant weightedVariant2 = plainVariant(ModelLocationUtils.getModelLocation(orientable, "_on"));
 		generator.blockStateOutput
 				.accept(
 						MultiVariantGenerator.dispatch(orientable)
 								.with(createBooleanModelDispatch(BlockStateProperties.POWERED, weightedVariant2, weightedVariant))
-								./*? =1.21.8 {*/ /*with *//*?} else {*/ with /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ with /*?} else {*/ /*with *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 	}
 
 	public static void registerRedstone(BlockModelGenerators generator, Block block) {
-        Identifier modelId = ModelLocationUtils.getModelLocation(block);
+        ResourceLocation modelId = ModelLocationUtils.getModelLocation(block);
 		MultiVariant weightedVariant = plainVariant(modelId);
 		MultiVariant weightedVariant2 = plainVariant(ModelLocationUtils.getModelLocation(block, "_on"));
 		generator.blockStateOutput

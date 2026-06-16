@@ -50,7 +50,7 @@ public final class DelayedDamager {
 		final AABB[] boxArray = boxes.toArray(AABB[]::new);
 
 		final AABB filter = encompassing(boxes);
-		final boolean multi = world.getGameRules()./*? <1.21.11 {*/ /*getBoolean *//*?} else {*/ get /*?}*/(LaseredstoneGameRules.MULTI_DAMAGE);
+		final boolean multi = world.getGameRules()./*? <1.21.11 {*/ getBoolean /*?} else {*/ /*get *//*?}*/(LaseredstoneGameRules.MULTI_DAMAGE);
 
 		for (final Entity entity : entities) {
 			final AABB bounding = entity.getBoundingBox();
@@ -123,7 +123,7 @@ public final class DelayedDamager {
 	public static boolean isVulnerableCandidate(final Entity entity) {
 		return entity != null
 				&& !entity.isInvulnerable()
-				&& !entity/*? <26 {*/ /*.getType() *//*?}*/.is(LaseredstoneTags.LASER_PROOF)
+				&& !entity/*? <26 {*/ .getType() /*?}*/.is(LaseredstoneTags.LASER_PROOF)
 				&& entity.isAlive();
 	}
 }

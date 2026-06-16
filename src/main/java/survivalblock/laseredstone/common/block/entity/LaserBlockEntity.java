@@ -46,7 +46,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beac
     public static final int MAX_DISTANCE = 16;
     public static final int DEFAULT_DISTANCE = -1;
 
-    /*? =1.21.8 {*/ /*List<Section> renderSegments; *//*?}*/
+    /*? =1.21.8 {*/ List<Section> renderSegments; /*?}*/
     protected int distance = DEFAULT_DISTANCE;
     protected int color = DEFAULT_COLOR;
 
@@ -148,7 +148,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beac
                 break;
             }
             //~ if >=26 'getLightBlock' -> 'getLightDampening'
-            if (mirrorState.getLightDampening() >= 15 && !mirrorState.is(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)) {
+            if (mirrorState.getLightBlock() >= 15 && !mirrorState.is(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)) {
                 break;
             }
         }
@@ -256,7 +256,7 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beac
 
     @Override
     public List<Section> getBeamSections() {
-        /*? =1.21.8 {*/ /*if (this.renderSegments != null) return this.renderSegments; *//*?}*/
+        /*? =1.21.8 {*/ if (this.renderSegments != null) return this.renderSegments; /*?}*/
         return this.getBeamSegments(this.currentOutputDirection, this.distance);
     }
 
@@ -288,8 +288,8 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beac
     }
 
     //? if =1.21.8 {
-    /*public void setRenderingSegments(List<Section> beamSegments) {
+    public void setRenderingSegments(List<Section> beamSegments) {
         this.renderSegments = beamSegments;
     }
-    *///?}
+    //?}
 }

@@ -1,6 +1,6 @@
 package survivalblock.laseredstone.common.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class LaseredstoneEnUsLangGenerator extends FabricLanguageProvider {
 
-    protected LaseredstoneEnUsLangGenerator(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    protected LaseredstoneEnUsLangGenerator(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 
