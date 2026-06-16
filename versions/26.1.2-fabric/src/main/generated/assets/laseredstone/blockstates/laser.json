@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "laseredstone:block/laser",
+      "x": 90
+    },
+    "facing=down,powered=true": {
+      "model": "laseredstone:block/laser_on",
+      "x": 90
+    },
+    "facing=east,powered=false": {
+      "model": "laseredstone:block/laser",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "laseredstone:block/laser_on",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "laseredstone:block/laser"
+    },
+    "facing=north,powered=true": {
+      "model": "laseredstone:block/laser_on"
+    },
+    "facing=south,powered=false": {
+      "model": "laseredstone:block/laser",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "laseredstone:block/laser_on",
+      "y": 180
+    },
+    "facing=up,powered=false": {
+      "model": "laseredstone:block/laser",
+      "x": 270
+    },
+    "facing=up,powered=true": {
+      "model": "laseredstone:block/laser_on",
+      "x": 270
+    },
+    "facing=west,powered=false": {
+      "model": "laseredstone:block/laser",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "laseredstone:block/laser_on",
+      "y": 270
+    }
+  }
+}

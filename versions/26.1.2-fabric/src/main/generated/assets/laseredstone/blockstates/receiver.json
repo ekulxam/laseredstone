@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "laseredstone:block/receiver"
+    },
+    "powered=true": {
+      "model": "laseredstone:block/receiver_on"
+    }
+  }
+}

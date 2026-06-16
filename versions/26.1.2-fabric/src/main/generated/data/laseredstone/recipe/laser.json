@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "#c:gems",
+    "E": "#laseredstone:laser_powerer",
+    "|": "minecraft:iron_block"
+  },
+  "pattern": [
+    "|#|",
+    "#E#",
+    "|#|"
+  ],
+  "result": {
+    "id": "laseredstone:laser"
+  }
+}
