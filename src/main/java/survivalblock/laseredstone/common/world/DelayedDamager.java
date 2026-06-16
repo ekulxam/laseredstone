@@ -1,9 +1,9 @@
 package survivalblock.laseredstone.common.world;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneDamageTypes;
 import survivalblock.laseredstone.common.init.LaseredstoneGameRules;
@@ -28,14 +28,14 @@ public final class DelayedDamager {
 	 *
 	 * @implNote ThreadLocal in use for DimThread support.
 	 */
-	private static final ThreadLocal<Set<Box>> damagingBoxes = ThreadLocal.withInitial(HashSet::new);
+	private static final ThreadLocal<Set<AABB>> damagingBoxes = ThreadLocal.withInitial(HashSet::new);
 
-	public static void submitDamagingBox(final Box box) {
+	public static void submitDamagingBox(final AABB box) {
 		damagingBoxes.get().add(box);
 	}
 
-	public static void damageTick(final ServerWorld world) {
-		final Set<Box> boxes = damagingBoxes.get();
+	public static void damageTick(final ServerLevel world) {
+		final Set<AABB> boxes = damagingBoxes.get();
 		if (boxes.isEmpty()) {
 			return;
 		}
@@ -47,23 +47,23 @@ public final class DelayedDamager {
 
 		DamageSource source = new DamageSource(LaseredstoneDamageTypes.getFromWorld(world, LaseredstoneDamageTypes.LASER));
 
-		final Box[] boxArray = boxes.toArray(Box[]::new);
+		final AABB[] boxArray = boxes.toArray(AABB[]::new);
 
-		final Box filter = encompassing(boxes);
-		final boolean multi = world.getGameRules()./*? <1.21.11 {*/ /*getBoolean *//*?} else {*/ getValue /*?}*/(LaseredstoneGameRules.MULTI_DAMAGE);
+		final AABB filter = encompassing(boxes);
+		final boolean multi = world.getGameRules()./*? <1.21.11 {*/ /*getBoolean *//*?} else {*/ get /*?}*/(LaseredstoneGameRules.MULTI_DAMAGE);
 
 		for (final Entity entity : entities) {
-			final Box bounding = entity.getBoundingBox();
+			final AABB bounding = entity.getBoundingBox();
 			// Low-pass filter.
 			if (!bounding.intersects(filter)) {
 				continue;
 			}
 
-			for (final Box box : boxArray) {
+			for (final AABB box : boxArray) {
 				if (!bounding.intersects(box)) {
 					continue;
 				}
-				entity.damage(world, source, LaserBlockEntity.getDamage(entity));
+				entity.hurtServer(world, source, LaserBlockEntity.getDamage(entity));
 				if (!multi) {
 					break;
 				}
@@ -73,9 +73,9 @@ public final class DelayedDamager {
 		boxes.clear();
 	}
 
-	private static Box encompassing(final Iterable<Box> boxes) {
-		final Iterator<Box> itr = boxes.iterator();
-		final Box first = itr.next();
+	private static AABB encompassing(final Iterable<AABB> boxes) {
+		final Iterator<AABB> itr = boxes.iterator();
+		final AABB first = itr.next();
 
 		if (!itr.hasNext()) {
 			return first;
@@ -89,7 +89,7 @@ public final class DelayedDamager {
 		double maxZ = first.maxZ;
 
 		while (itr.hasNext()) {
-			final Box box = itr.next();
+			final AABB box = itr.next();
 			minX = Math.min(minX, box.minX);
 			minY = Math.min(minY, box.minY);
 			minZ = Math.min(minZ, box.minZ);
@@ -98,7 +98,7 @@ public final class DelayedDamager {
 			maxZ = Math.max(maxZ, box.maxZ);
 		}
 
-		return new Box(
+		return new AABB(
 				minX,
 				minY,
 				minZ,
@@ -108,10 +108,10 @@ public final class DelayedDamager {
 		);
 	}
 
-	private static Collection<Entity> getVulnerableCandidates(final ServerWorld world) {
+	private static Collection<Entity> getVulnerableCandidates(final ServerLevel world) {
 		final ArrayList<Entity> list = new ArrayList<>();
 
-		for (final Entity entity : world.iterateEntities()) {
+		for (final Entity entity : world.getAllEntities()) {
 			if (DelayedDamager.isVulnerableCandidate(entity)) {
 				list.add(entity);
 			}
@@ -123,7 +123,7 @@ public final class DelayedDamager {
 	public static boolean isVulnerableCandidate(final Entity entity) {
 		return entity != null
 				&& !entity.isInvulnerable()
-				&& !entity.getType().isIn(LaseredstoneTags.LASER_PROOF)
+				&& !entity/*? <26 {*/ /*.getType() *//*?}*/.is(LaseredstoneTags.LASER_PROOF)
 				&& entity.isAlive();
 	}
 }
