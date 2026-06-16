@@ -73,7 +73,7 @@ public class LaseredstoneBlocks {
 
     @SuppressWarnings("SameParameterValue")
     private static <T extends Block> T registerBlock(String name, Function<BlockBehaviour.Properties, T> blockFromSettings, BlockBehaviour.Properties settings) {
-        /*? if <1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/ id = Laseredstone.id(name);
+        ResourceLocation id = Laseredstone.id(name);
         return Registry.register(BuiltInRegistries.BLOCK, id, blockFromSettings.apply(settings.setId(ResourceKey.create(Registries.BLOCK, id))));
     }
 

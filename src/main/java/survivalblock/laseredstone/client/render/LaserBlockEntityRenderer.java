@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 //import net.minecraft.client.renderer.state.CameraRenderState;
 //import net.minecraft.util.Util;
 //import org.jetbrains.annotations.Nullable;
-//? }
+//?}
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShapeRenderer;
@@ -127,8 +127,8 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
             laser.setRenderingSegments(directionToSegmentsMap.get(output));
             //?} else {
             /*state.sections = state.directionToSegmentsMap.get(output);
-             *///?}
-            super./* ? if > 1.21.8 {*?*/ /*submit*/ /*?} else {*/ render /*?}*/(/*? =1.21.8 {*/ laser, tickProgress, matrices, vertexConsumers, light, overlay, cameraPos /*?} else {*/ /*state, matrices, queue, cameraState *//*?}*/);
+            *///?}
+            super./*? if >1.21.8 {*/ /*submit*/ /*?} else {*/ render /*?}*/(/*? =1.21.8 {*/ laser, tickProgress, matrices, vertexConsumers, light, overlay, cameraPos /*?} else {*/ /*state, matrices, queue, cameraState *//*?}*/);
             /*? =1.21.8 {*/ laser.setRenderingSegments(null); /*?}*/
             matrices.popPose();
 

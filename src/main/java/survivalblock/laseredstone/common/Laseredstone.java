@@ -33,7 +33,7 @@ public class Laseredstone implements ModInitializer {
         ServerTickEvents.END_WORLD_TICK.register(DelayedDamager::damageTick);
     }
 
-    public static /*? if >=1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/ id(String path) {
-        return /*? if >=1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/.fromNamespaceAndPath(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }
