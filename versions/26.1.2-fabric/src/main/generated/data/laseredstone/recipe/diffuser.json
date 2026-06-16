@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "#c:gems",
+    "G": "minecraft:glass",
+    "o": "minecraft:observer",
+    "|": "minecraft:iron_block"
+  },
+  "pattern": [
+    "|#|",
+    "#G#",
+    "|o|"
+  ],
+  "result": {
+    "id": "laseredstone:diffuser"
+  }
+}

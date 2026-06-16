@@ -70,6 +70,11 @@ public class LaserBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        this.neighborChanged(state, world, pos, this, null, false);
+    }
+
+    @Override
     protected void neighborChanged(
             final BlockState state,
             final Level world,

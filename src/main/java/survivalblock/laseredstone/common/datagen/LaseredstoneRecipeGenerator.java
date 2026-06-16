@@ -4,11 +4,26 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
+//? if >=26 {
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.CustomCraftingRecipeBuilder;
+//?}
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+//? if >=26 {
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStackTemplate;
+//?}
 import net.minecraft.world.item.Items;
+//? if >=26 {
+import net.minecraft.world.item.crafting.DyeRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+//?}
 import net.minecraft.world.level.block.Blocks;
+//? if >=26
+import survivalblock.laseredstone.common.Laseredstone;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
@@ -75,6 +90,25 @@ public class LaseredstoneRecipeGenerator extends FabricRecipeProvider {
                         .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
                         .unlockedBy(getHasName(Blocks.GLASS), has(Blocks.GLASS))
                         .save(this.output);
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.DIFFUSER)
+                        .pattern("|#|")
+                        .pattern("#G#")
+                        .pattern("|o|")
+                        .define('o', Blocks.OBSERVER)
+                        .define('|', Blocks.IRON_BLOCK)
+                        .define('#', ConventionalItemTags.GEMS)
+                        .define('G', Blocks.GLASS)
+                        .unlockedBy(getHasName(Blocks.OBSERVER), has(Blocks.OBSERVER))
+                        .unlockedBy(getHasName(Blocks.IRON_BLOCK), has(Blocks.IRON_BLOCK))
+                        .unlockedBy("has_gem", has(ConventionalItemTags.GEMS))
+                        .unlockedBy(getHasName(Blocks.GLASS), has(Blocks.GLASS))
+                        .save(this.output);
+                //? if >=26 {
+                // this.dyedItem uses Identifier#parse so I'm not using that
+                CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC, (commonInfo, bookInfo) -> new DyeRecipe(commonInfo, bookInfo, Ingredient.of(LaseredstoneItems.LASER), this.tag(ItemTags.DYES), new ItemStackTemplate(LaseredstoneItems.LASER)))
+                        .unlockedBy(getHasName(LaseredstoneItems.LASER), this.has(LaseredstoneItems.LASER))
+                        .save(this.output, ResourceKey.create(Registries.RECIPE, Laseredstone.id(getItemName(LaseredstoneItems.LASER) + "_dyed")));
+                //?}
             }
         };
     }

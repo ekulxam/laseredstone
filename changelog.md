@@ -1,3 +1,6 @@
-Laseredstone 1.2.0
-- Port to mojmap (thank you to [@cputnam-a11y](https://github.com/cputnam-a11y) for the assistance!)
-- Port to 26.1.2
+Laseredstone 1.2.1
+- Update contributors section of fmj 
+- Add `package-info`s 
+- Fix [#5](https://github.com/ekulxam/laseredstone/issues/5)
+- Fix lasers not being dyeable in 26.1.2
+- Add Diffuser recipe

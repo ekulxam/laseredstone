@@ -24,6 +24,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
     maven ("https://maven.terraformersmc.com")
     maven ("https://maven.parchmentmc.org")
     maven ("https://api.modrinth.com/maven")
@@ -55,6 +56,10 @@ dependencies {
 
     modLocalRuntime("maven.modrinth:sodium:${property("deps.sodium_version")}")
     modLocalRuntime("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
+
+    if (stonecutter.eval(minecraft, "<1.21.11")) {
+        compileOnly("org.jspecify:jspecify:1.0.0")
+    }
 }
 
 stonecutter {
