@@ -1,15 +1,19 @@
 package survivalblock.laseredstone.common.init;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+/*? if <1.21.11 {*/
+/*import net.minecraft.resources.Identifier;*/
+/*? } else {*/
+import net.minecraft.resources.ResourceLocation;
+/*? } */
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import survivalblock.laseredstone.common.Laseredstone;
 import survivalblock.laseredstone.common.block.DiffuserBlock;
 import survivalblock.laseredstone.common.block.HorizontalHorizontalMirrorBlock;
@@ -25,51 +29,52 @@ public class LaseredstoneBlocks {
     public static final Block HORIZONTAL_VERTICAL_MIRROR = registerBlock(
             "horizontal_vertical_mirror",
             HorizontalVerticalMirrorBlock::new,
-            AbstractBlock.Settings.create().nonOpaque()
-                    .sounds(BlockSoundGroup.GLASS)
-                    .mapColor(MapColor.OFF_WHITE)
-                    .requiresTool()
+            BlockBehaviour.Properties.of()
+                    .noOcclusion()
+                    .sound(SoundType.GLASS)
+                    .mapColor(MapColor.QUARTZ)
+                    .requiresCorrectToolForDrops()
                     .strength(5.0F)
-                    .allowsSpawning(Blocks::never)
+                    .isValidSpawn(Blocks::never)
     );
 
     public static final Block HORIZONTAL_HORIZONTAL_MIRROR = registerBlock(
             "horizontal_horizontal_mirror",
             HorizontalHorizontalMirrorBlock::new,
-            AbstractBlock.Settings.copy(HORIZONTAL_VERTICAL_MIRROR)
+            BlockBehaviour.Properties.ofFullCopy(HORIZONTAL_VERTICAL_MIRROR)
     );
 
     public static final Block LASER = registerBlock(
             "laser",
             LaserBlock::new,
-            AbstractBlock.Settings.create()
-                    .requiresTool()
+            BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
                     .strength(10.0F)
-                    .allowsSpawning(Blocks::never)
+                    .isValidSpawn(net.minecraft.world.level.block.Blocks::never)
     );
 
     public static final Block RECEIVER = registerBlock(
             "receiver",
             ReceiverBlock::new,
-            AbstractBlock.Settings.copy(LASER).mapColor(MapColor.BLACK)
+            BlockBehaviour.Properties.ofFullCopy(LASER).mapColor(MapColor.COLOR_BLACK)
     );
 
     public static final Block LENS = registerBlock(
             "lens",
             LensBlock::new,
-            AbstractBlock.Settings.copy(RECEIVER).nonOpaque()
+            BlockBehaviour.Properties.ofFullCopy(RECEIVER).noOcclusion()
     );
 
     public static final Block DIFFUSER = registerBlock(
             "diffuser",
             DiffuserBlock::new,
-            AbstractBlock.Settings.copy(RECEIVER).nonOpaque()
+            BlockBehaviour.Properties.ofFullCopy(RECEIVER).noOcclusion()
     );
 
     @SuppressWarnings("SameParameterValue")
-    private static <T extends Block> T registerBlock(String name, Function<AbstractBlock.Settings, T> blockFromSettings, AbstractBlock.Settings settings) {
-        Identifier id = Laseredstone.id(name);
-        return Registry.register(Registries.BLOCK, id, blockFromSettings.apply(settings.registryKey(RegistryKey.of(RegistryKeys.BLOCK, id))));
+    private static <T extends Block> T registerBlock(String name, Function<BlockBehaviour.Properties, T> blockFromSettings, BlockBehaviour.Properties settings) {
+        /*? if <1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/ id = Laseredstone.id(name);
+        return Registry.register(BuiltInRegistries.BLOCK, id, blockFromSettings.apply(settings.setId(ResourceKey.create(Registries.BLOCK, id))));
     }
 
     public static void init() {

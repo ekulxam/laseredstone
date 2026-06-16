@@ -1,47 +1,48 @@
 package survivalblock.laseredstone.common.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.entity.ReceiverBlockEntity;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
 
-public class ReceiverBlock extends BlockWithEntity {
+public class ReceiverBlock extends BaseEntityBlock {
 
-    public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected final MapCodec<ReceiverBlock> codec = MapCodec.unit(this);
 
-    public ReceiverBlock(Settings settings) {
+    public ReceiverBlock(Properties settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(POWERED, false));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return codec;
     }
 
     @Override
-    protected boolean emitsRedstonePower(BlockState state) {
+    protected boolean isSignalSource(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        if (!state.get(POWERED)) {
+    protected int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        if (!state.getValue(POWERED)) {
             return 0;
         }
         if (!(world.getBlockEntity(pos) instanceof ReceiverBlockEntity receiverBlockEntity)) {
@@ -55,22 +56,23 @@ public class ReceiverBlock extends BlockWithEntity {
     }
 
     @Override
-    protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.get(POWERED) ? 15 : 0;
+    protected int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        return state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(POWERED);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new ReceiverBlockEntity(pos, state);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, LaseredstoneBlockEntityTypes.RECEIVER, ReceiverBlockEntity::tick);
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, LaseredstoneBlockEntityTypes.RECEIVER, ReceiverBlockEntity::tick);
     }
 }

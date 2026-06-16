@@ -2,7 +2,11 @@ package survivalblock.laseredstone.common;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.util.Identifier;
+/*? if <1.21.11 {*/
+/*import net.minecraft.resources.Identifier;*/
+/*? } else {*/
+import net.minecraft.resources.ResourceLocation;
+/*? } */
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -12,24 +16,24 @@ import survivalblock.laseredstone.common.init.LaseredstoneItems;
 import survivalblock.laseredstone.common.world.DelayedDamager;
 
 public class Laseredstone implements ModInitializer {
-	public static final String MOD_ID = "laseredstone";
+    public static final String MOD_ID = "laseredstone";
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    // This logger is used to write text to the console and the log file.
+    // It is considered best practice to use your mod id as the logger's name.
+    // That way, it's clear which mod wrote info, warnings, and errors.
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	@Override
-	public void onInitialize() {
-		LaseredstoneGameRules.init();
-		LaseredstoneBlocks.init();
-		LaseredstoneItems.init();
-		LaseredstoneBlockEntityTypes.init();
+    @Override
+    public void onInitialize() {
+        LaseredstoneGameRules.init();
+        LaseredstoneBlocks.init();
+        LaseredstoneItems.init();
+        LaseredstoneBlockEntityTypes.init();
 
-		ServerTickEvents.END_WORLD_TICK.register(DelayedDamager::damageTick);
-	}
+        ServerTickEvents.END_WORLD_TICK.register(DelayedDamager::damageTick);
+    }
 
-	public static Identifier id(String path) {
-		return Identifier.of(MOD_ID, path);
-	}
+    public static /*? if >=1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/ id(String path) {
+        return /*? if >=1.21.11 {*//*Identifier*//*?} *//*? else {*/ ResourceLocation /*?}*/.fromNamespaceAndPath(MOD_ID, path);
+    }
 }

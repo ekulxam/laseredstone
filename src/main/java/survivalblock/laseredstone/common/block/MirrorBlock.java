@@ -1,79 +1,77 @@
 package survivalblock.laseredstone.common.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class MirrorBlock extends BlockWithEntity {
+public abstract class MirrorBlock extends BaseEntityBlock {
 
-    protected static final VoxelShape STRAIGHT_SHAPE = VoxelShapes.union(
-            Block.createColumnShape(16.0, 0.0, 4.0),
-            Block.createCuboidShape(0.0, 4.0, 0.0, 16.0, 8.0, 12.0),
-            Block.createCuboidShape(0.0, 8.0, 0.0, 16.0, 12.0, 8.0),
-            Block.createCuboidShape(0.0, 12.0, 0.0, 16.0, 16.0, 4.0)
+    protected static final VoxelShape STRAIGHT_SHAPE = Shapes.or(
+            Block.column(16.0, 0.0, 4.0),
+            Block.box(0.0, 4.0, 0.0, 16.0, 8.0, 12.0),
+            Block.box(0.0, 8.0, 0.0, 16.0, 12.0, 8.0),
+            Block.box(0.0, 12.0, 0.0, 16.0, 16.0, 4.0)
     );
 
-    public static final EnumProperty<Direction> FACING = HorizontalFacingBlock.FACING;
-    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final MapCodec<MirrorBlock> codec = MapCodec.unit(this);
 
-    protected MirrorBlock(Settings settings) {
+    protected MirrorBlock(BlockBehaviour.Properties settings) {
         super(settings);
     }
 
     @Override
-    protected MapCodec<? extends MirrorBlock> getCodec() {
+    protected MapCodec<? extends MirrorBlock> codec() {
         return codec;
     }
 
     @Override
-    protected boolean hasSidedTransparency(BlockState state) {
+    protected boolean useShapeForLightOcclusion(BlockState state) {
         return true;
     }
 
     @Override
-    protected BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    protected BlockState mirror(BlockState state, BlockMirror mirror) {
-        Direction direction = state.get(FACING);
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        Direction direction = state.getValue(FACING);
         Direction.Axis axis = direction.getAxis();
-        if (mirror == BlockMirror.LEFT_RIGHT && axis == Direction.Axis.Z ||
-                mirror == BlockMirror.FRONT_BACK && axis == Direction.Axis.X) {
-            return state.rotate(BlockRotation.CLOCKWISE_180);
+        if (mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z ||
+                mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
+            return state.rotate(Rotation.CLOCKWISE_180);
         }
         return state;
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(FACING, WATERLOGGED);
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 

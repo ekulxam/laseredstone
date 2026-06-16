@@ -1,16 +1,17 @@
 package survivalblock.laseredstone.common.block.entity;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.storage.ReadView;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
 import survivalblock.laseredstone.common.block.DiffuserBlock;
 import survivalblock.laseredstone.common.block.ReceiverBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -24,7 +25,7 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
 
     public static final Direction[] VANILLA_DIRECTIONS = new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
 
-    public static final Codec<Map<Direction, Integer>> OUTPUTS_CODEC = Codec.simpleMap(Direction.CODEC, Codec.INT, StringIdentifiable.toKeyable(VANILLA_DIRECTIONS)).codec();
+    public static final Codec<Map<Direction, Integer>> OUTPUTS_CODEC = Codec.simpleMap(Direction.CODEC, Codec.INT, StringRepresentable.keys(VANILLA_DIRECTIONS)).codec();
 
     protected final EnumMap<Direction, Integer> directionToDistanceMap = new EnumMap<>(Direction.class);
 
@@ -37,13 +38,13 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
     }
 
     @Override
-    public boolean isAcceptableDirection(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState) {
-        return blockState.get(DiffuserBlock.FACING) == inputDirection;
+    public boolean isAcceptableDirection(Direction inputDirection, Level world, BlockPos blockPos, BlockState blockState) {
+        return blockState.getValue(DiffuserBlock.FACING) == inputDirection;
     }
 
     @Override
-    public Direction getOutputDirection(World world, BlockPos blockPos, BlockState blockState) {
-        return blockState.get(DiffuserBlock.FACING);
+    public Direction getOutputDirection(Level world, BlockPos blockPos, BlockState blockState) {
+        return blockState.getValue(DiffuserBlock.FACING);
     }
 
     @SuppressWarnings("RedundantMethodOverride")
@@ -58,9 +59,9 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
     }
 
     @Override
-    public void tick(World world, BlockPos blockPos, BlockState blockState) {
+    public void tick(Level world, BlockPos blockPos, BlockState blockState) {
         this.decrementDeflectionTicks();
-        Direction realInput = blockState.get(DiffuserBlock.FACING).getOpposite();
+        Direction realInput = blockState.getValue(DiffuserBlock.FACING).getOpposite();
         List<Direction> outputDirections = Arrays.stream(VANILLA_DIRECTIONS).filter(direction -> direction != realInput).toList();
         for (Direction direction : outputDirections) {
             this.currentOutputDirection = direction;
@@ -86,9 +87,9 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
             }
         }
         boolean shouldBePowered = this.canLaser(world, blockPos, blockState);
-        if (blockState.get(DiffuserBlock.POWERED) != shouldBePowered) {
+        if (blockState.getValue(DiffuserBlock.POWERED) != shouldBePowered) {
             blockState = blockState.cycle(ReceiverBlock.POWERED);
-            world.setBlockState(blockPos, blockState, Block.NOTIFY_ALL);
+            world.setBlock(blockPos, blockState, Block.UPDATE_ALL);
             ReceiverBlockEntity.update(world, blockPos, blockState);
         }
     }
@@ -99,15 +100,15 @@ public class DiffuserBlockEntity extends MirrorBlockEntity {
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
-        NbtCompound nbt = super.toInitialChunkDataNbt(registries);
-        nbt.put("directionToDistanceMap", OUTPUTS_CODEC, this.directionToDistanceMap);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag nbt = super.getUpdateTag(registries);
+        nbt.store("directionToDistanceMap", OUTPUTS_CODEC, this.directionToDistanceMap);
         return nbt;
     }
 
     @Override
-    protected void readData(ReadView view) {
-        super.readData(view);
+    protected void loadAdditional(ValueInput view) {
+        super.loadAdditional(view);
 
         if (view.contains("directionToDistanceMap")) {
             view.read("directionToDistanceMap", OUTPUTS_CODEC).ifPresent(map -> {

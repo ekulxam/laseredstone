@@ -1,11 +1,11 @@
 package survivalblock.laseredstone.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class LaserInteractorBlockEntity extends BlockEntity {
 
@@ -22,5 +22,5 @@ public abstract class LaserInteractorBlockEntity extends BlockEntity {
      * @param sender the {@link LaserBlockEntity} that the laser belongs to
      * @return whether the {@link LaserBlockEntity#distance} should be incremented (mirrors should return true so the laser ends inside them)
      */
-    public abstract boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender);
+    public abstract boolean receiveLaser(Direction inputDirection, Level world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender);
 }
