@@ -41,7 +41,7 @@ public class LaseredstoneLootTableGenerator extends FabricBlockLootTableProvider
                                         .add(
                                                 LootItem.lootTableItem(drop)
                                                         .apply(
-                                                                CopyComponentsFunction./*? =1.21.8 {*/ copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY) /*?} else {*/ /*copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY) *//*?}*/
+                                                                CopyComponentsFunction./*? =1.21.8 {*/ /*copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY) *//*?} else {*/ copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY) /*?}*/
                                                                         .include(DataComponents.DYED_COLOR)
                                                         )
                                         )

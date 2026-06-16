@@ -96,7 +96,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 		generator.blockStateOutput
 				.accept(
 						MultiVariantGenerator.dispatch(orientable, weightedVariant)
-								./*? =1.21.8 {*/ with /*?} else {*/ /*with *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ /*with *//*?} else {*/ with /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 		generator.registerSimpleItemModel(orientable.asItem(), modelId);
 	}
@@ -108,7 +108,7 @@ public class LaseredstoneModelGenerator extends FabricModelProvider {
 				.accept(
 						MultiVariantGenerator.dispatch(orientable)
 								.with(createBooleanModelDispatch(BlockStateProperties.POWERED, weightedVariant2, weightedVariant))
-								./*? =1.21.8 {*/ with /*?} else {*/ /*with *//*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
+								./*? =1.21.8 {*/ /*with *//*?} else {*/ with /*?}*/(NORTH_DEFAULT_ROTATION_OPERATIONS)
 				);
 	}
 
