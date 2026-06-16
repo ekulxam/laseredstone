@@ -14,7 +14,11 @@ import net.minecraft.client.renderer.state.CameraRenderState;
 import org.jetbrains.annotations.Nullable;
 //?}
 import net.minecraft.client.renderer.MultiBufferSource;
+//? if >=1.21.11 {
+/*import net.minecraft.client.renderer.rendertype.RenderTypes;
+*///?} else {
 import net.minecraft.client.renderer.RenderType;
+//?}
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

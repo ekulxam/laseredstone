@@ -27,7 +27,7 @@ public class LaseredstoneGameRules {
         //? <1.21.11
         return GameRuleRegistry.register(Laseredstone.MOD_ID + ":" + name, CATEGORY, type);
         //? >=1.21.11
-        /*return builder.category(CATEGORY).buildAndRegister(Laseredstone.id(name));*/
+        //return builder.category(CATEGORY).buildAndRegister(Laseredstone.id(name));
     }
 
     public static void init() {
