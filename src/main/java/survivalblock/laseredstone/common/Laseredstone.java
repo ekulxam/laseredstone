@@ -2,11 +2,7 @@ package survivalblock.laseredstone.common;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-/*? if <1.21.11 {*/
-/*import net.minecraft.resources.Identifier;*/
-/*? } else {*/
 import net.minecraft.resources.ResourceLocation;
-/*? } */
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;

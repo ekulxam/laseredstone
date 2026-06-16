@@ -25,7 +25,7 @@ public class LaseredstoneDynamicRegistryGenerator extends FabricDynamicRegistryP
             registries.lookupOrThrow(key)
                     .listElements()
                     .filter(ref ->
-                            Laseredstone.MOD_ID.equals(ref.key()./*? if <1.21.11 { */ /*identifier()*/ /*?} else {*/ location() /*?}*/.getNamespace()))
+                            Laseredstone.MOD_ID.equals(ref.key()./*? if <1.21.11 { */ identifier() /*?} else {*/ /*location() *//*?}*/.getNamespace()))
                     .forEachOrdered(ref ->
                             entries.add(ref.key(), ref.value()));
         });

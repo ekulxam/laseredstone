@@ -14,11 +14,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
-/*? if <1.21.11 {*/
-/*import net.minecraft.resources.Identifier;*/
-/*? } else {*/
 import net.minecraft.resources.ResourceLocation;
-/*? } */
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Half;

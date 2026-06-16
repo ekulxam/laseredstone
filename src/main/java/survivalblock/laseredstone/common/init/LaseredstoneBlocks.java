@@ -3,11 +3,7 @@ package survivalblock.laseredstone.common.init;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-/*? if <1.21.11 {*/
-/*import net.minecraft.resources.Identifier;*/
-/*? } else {*/
 import net.minecraft.resources.ResourceLocation;
-/*? } */
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
