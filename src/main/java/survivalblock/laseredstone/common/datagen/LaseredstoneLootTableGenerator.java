@@ -1,7 +1,7 @@
 package survivalblock.laseredstone.common.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.block.Block;
@@ -15,9 +15,9 @@ import survivalblock.laseredstone.common.init.LaseredstoneBlocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class LaseredstoneLootTableGenerator extends FabricBlockLootTableProvider {
+public class LaseredstoneLootTableGenerator extends FabricBlockLootSubProvider {
 
-    protected LaseredstoneLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    protected LaseredstoneLootTableGenerator(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 

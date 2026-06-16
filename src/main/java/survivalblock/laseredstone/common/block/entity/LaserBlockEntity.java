@@ -147,7 +147,8 @@ public class LaserBlockEntity extends LaserInteractorBlockEntity implements Beac
                 }
                 break;
             }
-            if (mirrorState.getLightBlock() >= 15 && !mirrorState.is(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)) {
+            //~ if >=26 'getLightBlock' -> 'getLightDampening'
+            if (mirrorState.getLightDampening() >= 15 && !mirrorState.is(LaseredstoneTags.ALWAYS_ALLOWS_LASERS)) {
                 break;
             }
         }

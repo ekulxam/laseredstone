@@ -67,6 +67,39 @@ stonecutter {
         direction = eval(current.version, ">1.21.8")
         replace("PlayerRenderer", "AvatarRenderer")
     }
+
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("FabricDataOutput", "FabricPackOutput")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("FabricBlockLootTableProvider", "FabricBlockLootSubProvider")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("FabricTagProvider", "FabricTagsProvider")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("BlockTagProvider", "BlockTagsProvider")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("EntityTypeTagProvider", "EntityTypeTagsProvider")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("ItemTagProvider", "ItemTagsProvider")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("ColorProviderRegistry", "BlockColorRegistry")
+    }
+    replacements.string {
+        direction = eval(minecraft, ">=26")
+        replace("BlockRenderLayerMap", "ChunkSectionLayerMap")
+    }
 }
 
 fletchingTable {

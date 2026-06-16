@@ -1,5 +1,6 @@
 package survivalblock.laseredstone.client.render;
 
+//~ if >=26 'net.minecraft.client.renderer.state.CameraRenderState' -> 'net.minecraft.client.renderer.state.level.CameraRenderState' {
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -10,15 +11,15 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.state.BeaconRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import org.jetbrains.annotations.Nullable;
 //?}
 import net.minecraft.client.renderer.MultiBufferSource;
 //? if >=1.21.11 {
-/*import net.minecraft.client.renderer.rendertype.RenderTypes;
-*///?} else {
-import net.minecraft.client.renderer.RenderType;
-//?}
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+//?} else {
+/*import net.minecraft.client.renderer.RenderType;
+*///?}
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -38,7 +39,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static survivalblock.laseredstone.common.block.entity.LaserBlockEntity.expandInOneDirection;
+//~}
 
+//~ if >=1.21.9 'render(' -> 'submit(' {
 public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends BeaconRenderer<T> {
 
     protected static final Map<Direction, Consumer<PoseStack>> DIRECTION_TRANSFORMS = ImmutableMap.<Direction, Consumer<PoseStack>>builder()
@@ -94,7 +97,7 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
     //?}
 
     @Override
-    public void /*? if >=1.21.9 { */ submit /*?} else {*/ /*render *//*?}*/(/*? =1.21.8 {*/ /*T laser, float tickProgress, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, Vec3 cameraPos *//*?} else {*/
+    public void submit(/*? =1.21.8 {*/ /*T laser, float tickProgress, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, Vec3 cameraPos *//*?} else {*/
     BeaconRenderState blockEntityRenderState, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState /*?}*/) {
         //? if >=1.21.9 {
         if (!(blockEntityRenderState instanceof LaserBlockEntityRenderState state)) {
@@ -129,7 +132,7 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
             *///?} else {
             state.sections = state.directionToSegmentsMap.get(output);
             //?}
-            super./*? if >1.21.8 {*/ submit /*?} else {*/ /*render *//*?}*/(/*? =1.21.8 {*/ /*laser, tickProgress, matrices, vertexConsumers, light, overlay, cameraPos *//*?} else {*/ state, matrices, queue, cameraState /*?}*/);
+            super.submit(/*? =1.21.8 {*/ /*laser, tickProgress, matrices, vertexConsumers, light, overlay, cameraPos *//*?} else {*/ state, matrices, queue, cameraState /*?}*/);
             /*? =1.21.8 {*/ /*laser.setRenderingSegments(null); *//*?}*/
             matrices.popPose();
 
@@ -146,7 +149,7 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
                 //? if =1.21.8 {
                 /*ShapeRenderer.renderLineBox(matrices, vertexConsumers.getBuffer(RenderType.LINES), box, red, green, blue, 1);
                  *///?} else {
-                queue.submitCustomGeometry(matrices, /*? <1.21.11 {*/ RenderType /*?} else {*/ /*RenderTypes *//*?}*/.LINES, (matricesEntry, vertexConsumer) -> drawBox(matricesEntry, vertexConsumer, box, red, green, blue, 1));
+                queue.submitCustomGeometry(matrices, /*? <1.21.11 {*/ /*RenderType *//*?} else {*/ RenderTypes /*?}*/.LINES, (matricesEntry, vertexConsumer) -> drawBox(matricesEntry, vertexConsumer, box, red, green, blue, 1));
                 //?}
                 matrices.popPose();
             }
@@ -156,9 +159,9 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
     //? if >1.21.8 {
     public void drawBox(PoseStack.Pose entry, VertexConsumer vertexConsumers, AABB box, float red, float green, float blue, float alpha) {
         //? if <1.21.11
-        ShapeRenderer.renderLineBox(entry, vertexConsumers, box, red, green, blue, 1);
+        //ShapeRenderer.renderLineBox(entry, vertexConsumers, box, red, green, blue, 1);
         //? if >=1.21.11 {
-        /*float width = Math.max(2.5F, Minecraft.getInstance().getWindow().getWidth() / 1920.0F * 2.5F);
+        float width = Math.max(2.5F, Minecraft.getInstance().getWindow().getWidth() / 1920.0F * 2.5F);
         float f = (float) box.minX;
         float g = (float) box.minY;
         float h = (float) box.minZ;
@@ -189,7 +192,8 @@ public class LaserBlockEntityRenderer<T extends LaserBlockEntity> extends Beacon
         vertexConsumers.addVertex(entry, i, j, k).setColor(red, green, blue, alpha).setNormal(entry, 0.0F, 1.0F, 0.0F).setLineWidth(width);
         vertexConsumers.addVertex(entry, i, j, h).setColor(red, green, blue, alpha).setNormal(entry, 0.0F, 0.0F, 1.0F).setLineWidth(width);
         vertexConsumers.addVertex(entry, i, j, k).setColor(red, green, blue, alpha).setNormal(entry, 0.0F, 0.0F, 1.0F).setLineWidth(width);
-        *///?}
+        //?}
     }
     //?}
 }
+//~}

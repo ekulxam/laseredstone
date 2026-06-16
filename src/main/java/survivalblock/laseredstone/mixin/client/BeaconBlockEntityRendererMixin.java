@@ -22,7 +22,8 @@ public class BeaconBlockEntityRendererMixin {
         return blockEntity instanceof LaserBlockEntity ? beamSegment.getHeight() : original;
     }
     *///?} else {
-    @ModifyExpressionValue(method = "submit(Lnet/minecraft/client/renderer/blockentity/state/BeaconRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V", at = @At(value = "CONSTANT", args = "intValue=2048"))
+    //~ if >=26 'net/minecraft/client/renderer/state/CameraRenderState' -> 'net/minecraft/client/renderer/state/level/CameraRenderState'
+    @ModifyExpressionValue(method = "submit(Lnet/minecraft/client/renderer/blockentity/state/BeaconRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "CONSTANT", args = "intValue=2048"))
     private int useHeightInstead(int original, @Local(argsOnly = true) BeaconRenderState state, @Local BeaconRenderState.Section beamSegment) {
         return state instanceof LaserBlockEntityRenderState ? beamSegment.height() : original;
     }

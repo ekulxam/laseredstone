@@ -2,7 +2,7 @@ package survivalblock.laseredstone.common;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -26,10 +26,11 @@ public class Laseredstone implements ModInitializer {
         LaseredstoneItems.init();
         LaseredstoneBlockEntityTypes.init();
 
-        ServerTickEvents.END_WORLD_TICK.register(DelayedDamager::damageTick);
+        //~ if >=26 'WORLD' -> 'LEVEL'
+        ServerTickEvents.END_LEVEL_TICK.register(DelayedDamager::damageTick);
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

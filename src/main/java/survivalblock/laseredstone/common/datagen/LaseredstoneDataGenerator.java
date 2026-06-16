@@ -2,7 +2,7 @@ package survivalblock.laseredstone.common.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -25,14 +25,16 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(LaseredstoneModelGenerator::new);
 		pack.addProvider(LaseredstoneEnUsLangGenerator::new);
-		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagProvider.ItemTagProvider(fabricDataOutput, completableFuture) {
+		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagsProvider.ItemTagsProvider(fabricDataOutput, completableFuture) {
 			@Override
 			protected void addTags(HolderLookup.Provider wrapperLookup) {
-				valueLookupBuilder(ItemTags.DYEABLE).add(LaseredstoneItems.LASER);
+                //~ if >=26 'DYEABLE' -> 'CAULDRON_CAN_REMOVE_DYE' {
+				valueLookupBuilder(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(LaseredstoneItems.LASER);
                 valueLookupBuilder(LaseredstoneTags.LASER_POWERER).add(Items.BEACON);
+                //~}
 			}
 		});
-		pack.addProvider(((fabricDataOutput, completableFuture) -> new FabricTagProvider.BlockTagProvider(fabricDataOutput, completableFuture) {
+		pack.addProvider(((fabricDataOutput, completableFuture) -> new FabricTagsProvider.BlockTagsProvider(fabricDataOutput, completableFuture) {
 			@Override
 			protected void addTags(HolderLookup.Provider wrapperLookup) {
 				valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE).add(
@@ -48,7 +50,7 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 						.addOptional(Blocks.TINTED_GLASS);
 			}
 		}));
-		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagProvider<DamageType>(fabricDataOutput, Registries.DAMAGE_TYPE, completableFuture) {
+		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagsProvider<DamageType>(fabricDataOutput, Registries.DAMAGE_TYPE, completableFuture) {
 			@Override
 			protected void addTags(HolderLookup.Provider wrapperLookup) {
 				builder(DamageTypeTags.BYPASSES_COOLDOWN)
@@ -64,7 +66,7 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 						.add(LaseredstoneDamageTypes.LASER);
 			}
 		});
-		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagProvider.EntityTypeTagProvider(fabricDataOutput, completableFuture) {
+		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricTagsProvider.EntityTypeTagsProvider(fabricDataOutput, completableFuture) {
 			@Override
 			protected void addTags(final HolderLookup.Provider wrapperLookup) {
 				valueLookupBuilder(LaseredstoneTags.LASER_PROOF).add(
