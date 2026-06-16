@@ -4,7 +4,7 @@ package survivalblock.laseredstone.common.init;
 //~ if >=26 'ItemGroupEvents' -> 'CreativeModeTabEvents' {
 //~ if >=26 'ModifyEntries' -> 'ModifyOutput' {
 //~ if >=26 'modifyEntriesEvent' -> 'modifyOutputEvent' {
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,10 +32,10 @@ public class LaseredstoneItems {
     private static Item register(Block block) {
         return registerBlock(block, new Item.Properties()
                 //? if <26 {
-                .component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_EXPLOSION))
-                //?} else {
-                /*.delayedComponent(DataComponents.DAMAGE_RESISTANT, context -> new DamageResistant(context.getOrThrow(DamageTypeTags.IS_EXPLOSION)))
-                *///?}
+                /*.component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_EXPLOSION))
+                *///?} else {
+                .delayedComponent(DataComponents.DAMAGE_RESISTANT, context -> new DamageResistant(context.getOrThrow(DamageTypeTags.IS_EXPLOSION)))
+                //?}
         );
     }
 
@@ -45,14 +45,14 @@ public class LaseredstoneItems {
 
     private static ResourceKey<Item> blockIdToItemId(final ResourceKey<Block> blockName) {
         //~ if >=1.21.11 'location' -> 'identifier'
-        return ResourceKey.create(Registries.ITEM, blockName.location());
+        return ResourceKey.create(Registries.ITEM, blockName.identifier());
     }
 
     private static Item registerBlock(final Block block, final BiFunction<Block, Item.Properties, Item> itemFactory, final Item.Properties properties) {
         return registerItem(
                 blockIdToItemId(block.builtInRegistryHolder().key()),
                 p -> itemFactory.apply(block, p),
-                properties.useBlockDescriptionPrefix()/*? >=26 {*/ /*.requiredFeatures(block.requiredFeatures()) *//*?}*/
+                properties.useBlockDescriptionPrefix()/*? >=26 {*/ .requiredFeatures(block.requiredFeatures()) /*?}*/
         );
     }
 
@@ -66,7 +66,7 @@ public class LaseredstoneItems {
     }
 
     public static void init() {
-        ItemGroupEvents.ModifyEntries addLaseredstoneItems = entries -> {
+        CreativeModeTabEvents.ModifyOutput addLaseredstoneItems = entries -> {
             entries.accept(HORIZONTAL_VERTICAL_MIRROR);
             entries.accept(HORIZONTAL_HORIZONTAL_MIRROR);
             entries.accept(LASER);
@@ -74,8 +74,8 @@ public class LaseredstoneItems {
             entries.accept(LENS);
             entries.accept(DIFFUSER);
         };
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(addLaseredstoneItems);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(addLaseredstoneItems);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(addLaseredstoneItems);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(addLaseredstoneItems);
     }
 }
 //~}
