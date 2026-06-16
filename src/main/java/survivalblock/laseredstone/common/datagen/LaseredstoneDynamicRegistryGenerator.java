@@ -2,10 +2,11 @@ package survivalblock.laseredstone.common.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import survivalblock.laseredstone.common.Laseredstone;
 
 import java.util.List;
@@ -13,20 +14,20 @@ import java.util.concurrent.CompletableFuture;
 
 public class LaseredstoneDynamicRegistryGenerator extends FabricDynamicRegistryProvider {
 
-    public LaseredstoneDynamicRegistryGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public LaseredstoneDynamicRegistryGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
-        List<RegistryKey<? extends Registry<?>>> registryKeys = List.of(RegistryKeys.DAMAGE_TYPE);
+    protected void configure(HolderLookup.Provider registries, Entries entries) {
+        List<ResourceKey<? extends Registry<?>>> registryKeys = List.of(Registries.DAMAGE_TYPE);
         registryKeys.forEach(key -> {
-            registries.getOrThrow(key)
-                    .streamEntries()
+            registries.lookupOrThrow(key)
+                    .listElements()
                     .filter(ref ->
-                            Laseredstone.MOD_ID.equals(ref.registryKey().getValue().getNamespace()))
+                            Laseredstone.MOD_ID.equals(ref.key()./*? if <1.21.11 {*//*identifier()*//*?} *//*? else {*/ location() /*?}*/.getNamespace()))
                     .forEachOrdered(ref ->
-                            entries.add(ref.registryKey(), ref.value()));
+                            entries.add(ref.key(), ref.value()));
         });
     }
 

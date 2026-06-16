@@ -1,20 +1,13 @@
 package survivalblock.laseredstone.common.init;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import survivalblock.laseredstone.common.Laseredstone;
-import survivalblock.laseredstone.common.block.DiffuserBlock;
-import survivalblock.laseredstone.common.block.entity.DiffuserBlockEntity;
-import survivalblock.laseredstone.common.block.entity.HorizontalHorizontalMirrorBlockEntity;
-import survivalblock.laseredstone.common.block.entity.LaserBlockEntity;
-import survivalblock.laseredstone.common.block.entity.HorizontalVerticalMirrorBlockEntity;
-import survivalblock.laseredstone.common.block.entity.LensBlockEntity;
-import survivalblock.laseredstone.common.block.entity.MirrorBlockEntity;
-import survivalblock.laseredstone.common.block.entity.ReceiverBlockEntity;
+import survivalblock.laseredstone.common.block.entity.*;
 
 public class LaseredstoneBlockEntityTypes {
 
@@ -41,7 +34,7 @@ public class LaseredstoneBlockEntityTypes {
             FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory,
             Block... blocks
     ) {
-        return Registry.register(Registries.BLOCK_ENTITY_TYPE, Laseredstone.id(name), FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
+        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Laseredstone.id(name), FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
     }
 
     public static void init() {

@@ -1,27 +1,28 @@
 package survivalblock.laseredstone.common.init;
 
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.level.Level;
 import survivalblock.laseredstone.common.Laseredstone;
+
 
 public class LaseredstoneDamageTypes {
 
-    public static final RegistryKey<DamageType> LASER = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Laseredstone.id("laser"));
+    public static final ResourceKey<DamageType> LASER = ResourceKey.create(Registries.DAMAGE_TYPE, Laseredstone.id("laser"));
 
-    public static void bootstrap(Registerable<DamageType> registerable) {
+    public static void bootstrap(BootstrapContext<DamageType> registerable) {
         registerable.register(LASER, new DamageType("laseredstone.laser", 0.1F));
     }
 
-    public static <T> RegistryEntry<T> getFromWorld(World world, RegistryKey<T> key) {
-        return getFromDRM(world.getRegistryManager(), key);
+    public static <T> Holder<T> getFromWorld(Level world, ResourceKey<T> key) {
+        return getFromDRM(world.registryAccess(), key);
     }
 
-    public static <T> RegistryEntry<T> getFromDRM(DynamicRegistryManager drm, RegistryKey<T> key) {
-        return drm.getEntryOrThrow(key);
+    public static <T> Holder<T> getFromDRM(RegistryAccess drm, ResourceKey<T> key) {
+        return drm.getOrThrow(key);
     }
 }

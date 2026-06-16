@@ -1,10 +1,10 @@
 package survivalblock.laseredstone.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.laseredstone.common.block.LensBlock;
 import survivalblock.laseredstone.common.init.LaseredstoneBlockEntityTypes;
@@ -20,13 +20,13 @@ public class LensBlockEntity extends MirrorBlockEntity {
     }
 
     @Override
-    public boolean isAcceptableDirection(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState) {
-        return blockState.get(LensBlock.FACING).getAxis() == inputDirection.getAxis();
+    public boolean isAcceptableDirection(Direction inputDirection, Level world, BlockPos blockPos, BlockState blockState) {
+        return blockState.getValue(LensBlock.FACING).getAxis() == inputDirection.getAxis();
     }
 
     @Override
-    public Direction getOutputDirection(World world, BlockPos blockPos, BlockState blockState) {
-        return blockState.get(LensBlock.FACING);
+    public Direction getOutputDirection(Level world, BlockPos blockPos, BlockState blockState) {
+        return blockState.getValue(LensBlock.FACING);
     }
 
     @Override

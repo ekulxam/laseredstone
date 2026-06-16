@@ -3,12 +3,12 @@ package survivalblock.laseredstone.common.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import survivalblock.laseredstone.common.init.LaseredstoneItems;
 import survivalblock.laseredstone.common.init.LaseredstoneTags;
 
@@ -16,65 +16,65 @@ import java.util.concurrent.CompletableFuture;
 
 public class LaseredstoneRecipeGenerator extends FabricRecipeProvider {
 
-    public LaseredstoneRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public LaseredstoneRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registryLookup, RecipeExporter exporter) {
-        return new RecipeGenerator(registryLookup, exporter) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, RecipeOutput exporter) {
+        return new RecipeProvider(registryLookup, exporter) {
             @Override
-            public void generate() {
-                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.RECEIVER)
+            public void buildRecipes() {
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.RECEIVER)
                         .pattern("|#|")
                         .pattern("#o#")
                         .pattern("|#|")
-                        .input('o', Blocks.OBSERVER)
-                        .input('|', Items.NETHERITE_INGOT)
-                        .input('#', Items.QUARTZ)
-                        .criterion(hasItem(Blocks.OBSERVER), conditionsFromItem(Blocks.OBSERVER))
-                        .criterion(hasItem(Items.NETHERITE_INGOT), conditionsFromItem(Items.NETHERITE_INGOT))
-                        .criterion(hasItem(Items.QUARTZ), conditionsFromItem(Items.QUARTZ))
-                        .offerTo(this.exporter);
-                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.HORIZONTAL_VERTICAL_MIRROR)
+                        .define('o', Blocks.OBSERVER)
+                        .define('|', Items.NETHERITE_INGOT)
+                        .define('#', Items.QUARTZ)
+                        .unlockedBy(getHasName(Blocks.OBSERVER), has(Blocks.OBSERVER))
+                        .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
+                        .unlockedBy(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+                        .save(this.output);
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.HORIZONTAL_VERTICAL_MIRROR)
                         .pattern("  #")
                         .pattern(" g#")
                         .pattern("###")
-                        .input('g', Blocks.GLASS)
-                        .input('#', Items.QUARTZ)
-                        .criterion(hasItem(Blocks.GLASS), conditionsFromItem(Blocks.GLASS))
-                        .criterion(hasItem(Items.QUARTZ), conditionsFromItem(Items.QUARTZ))
-                        .offerTo(this.exporter);
-                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.HORIZONTAL_HORIZONTAL_MIRROR)
+                        .define('g', Blocks.GLASS)
+                        .define('#', Items.QUARTZ)
+                        .unlockedBy(getHasName(Blocks.GLASS), has(Blocks.GLASS))
+                        .unlockedBy(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+                        .save(this.output);
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.HORIZONTAL_HORIZONTAL_MIRROR)
                         .pattern("#g#")
                         .pattern("###")
-                        .input('g', Blocks.GLASS)
-                        .input('#', Items.QUARTZ)
-                        .criterion(hasItem(Blocks.GLASS), conditionsFromItem(Blocks.GLASS))
-                        .criterion(hasItem(Items.QUARTZ), conditionsFromItem(Items.QUARTZ))
-                        .offerTo(this.exporter);
-                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.LASER)
+                        .define('g', Blocks.GLASS)
+                        .define('#', Items.QUARTZ)
+                        .unlockedBy(getHasName(Blocks.GLASS), has(Blocks.GLASS))
+                        .unlockedBy(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+                        .save(this.output);
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.LASER)
                         .pattern("|#|")
                         .pattern("#E#")
                         .pattern("|#|")
-                        .input('E', LaseredstoneTags.LASER_POWERER)
-                        .input('|', Blocks.IRON_BLOCK)
-                        .input('#', ConventionalItemTags.GEMS)
-                        .criterion("has_laser_powerer", conditionsFromTag(LaseredstoneTags.LASER_POWERER))
-                        .criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK))
-                        .criterion("has_gem", conditionsFromTag(ConventionalItemTags.GEMS))
-                        .offerTo(this.exporter);
-                this.createShaped(RecipeCategory.REDSTONE, LaseredstoneItems.LENS)
+                        .define('E', LaseredstoneTags.LASER_POWERER)
+                        .define('|', Blocks.IRON_BLOCK)
+                        .define('#', ConventionalItemTags.GEMS)
+                        .unlockedBy("has_laser_powerer", has(LaseredstoneTags.LASER_POWERER))
+                        .unlockedBy(getHasName(Blocks.IRON_BLOCK), has(Blocks.IRON_BLOCK))
+                        .unlockedBy("has_gem", has(ConventionalItemTags.GEMS))
+                        .save(this.output);
+                this.shaped(RecipeCategory.REDSTONE, LaseredstoneItems.LENS)
                         .pattern("|#|")
                         .pattern("|G|")
                         .pattern("|#|")
-                        .input('G', ConventionalItemTags.GEMS)
-                        .input('|', Items.NETHERITE_INGOT)
-                        .input('#', Blocks.GLASS)
-                        .criterion("has_gem", conditionsFromTag(ConventionalItemTags.GEMS))
-                        .criterion(hasItem(Items.NETHERITE_INGOT), conditionsFromItem(Items.NETHERITE_INGOT))
-                        .criterion(hasItem(Blocks.GLASS), conditionsFromItem(Blocks.GLASS))
-                        .offerTo(this.exporter);
+                        .define('G', ConventionalItemTags.GEMS)
+                        .define('|', Items.NETHERITE_INGOT)
+                        .define('#', Blocks.GLASS)
+                        .unlockedBy("has_gem", has(ConventionalItemTags.GEMS))
+                        .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
+                        .unlockedBy(getHasName(Blocks.GLASS), has(Blocks.GLASS))
+                        .save(this.output);
             }
         };
     }

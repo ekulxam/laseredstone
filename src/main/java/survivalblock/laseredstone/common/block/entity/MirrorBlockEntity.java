@@ -1,14 +1,15 @@
 package survivalblock.laseredstone.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.storage.ReadView;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
 import org.jetbrains.annotations.Nullable;
+
 
 public abstract class MirrorBlockEntity extends LaserBlockEntity {
 
@@ -23,12 +24,12 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
     }
 
     @Override
-    public boolean canLaser(World world, BlockPos blockPos, BlockState blockState) {
+    public boolean canLaser(Level world, BlockPos blockPos, BlockState blockState) {
         return this.deflectionTicks > 0 && this.inputDirection != null;
     }
 
     @Override
-    public void tick(World world, BlockPos blockPos, BlockState blockState) {
+    public void tick(Level world, BlockPos blockPos, net.minecraft.world.level.block.state.BlockState blockState) {
         this.decrementDeflectionTicks();
         super.tick(world, blockPos, blockState);
     }
@@ -46,27 +47,27 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
         }
     }
 
-    public abstract boolean isAcceptableDirection(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState);
+    public abstract boolean isAcceptableDirection(Direction inputDirection, Level world, BlockPos blockPos, BlockState blockState);
 
     @Override
-    public abstract Direction getOutputDirection(World world, BlockPos blockPos, BlockState blockState);
+    public abstract Direction getOutputDirection(Level world, BlockPos blockPos, BlockState blockState);
 
     @Override
-    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
-        NbtCompound nbt = super.toInitialChunkDataNbt(registries);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag nbt = super.getUpdateTag(registries);
         nbt.putInt("deflectionTicks", this.deflectionTicks);
         if (this.inputDirection != null) {
-            nbt.put("inputDirection", Direction.CODEC, this.inputDirection);
+            nbt.store("inputDirection", Direction.CODEC, this.inputDirection);
         }
         return nbt;
     }
 
     @Override
-    protected void readData(ReadView view) {
-        super.readData(view);
+    protected void loadAdditional(ValueInput view) {
+        super.loadAdditional(view);
 
         if (view.contains("deflectionTicks")) {
-            this.deflectionTicks = view.getInt("deflectionTicks", 0);
+            this.deflectionTicks = view.getIntOr("deflectionTicks", 0);
         }
         if (view.contains("inputDirection")) {
             this.inputDirection = view.read("inputDirection", Direction.CODEC).orElse(null);
@@ -74,7 +75,7 @@ public abstract class MirrorBlockEntity extends LaserBlockEntity {
     }
 
     @Override
-    public boolean receiveLaser(Direction inputDirection, World world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
+    public boolean receiveLaser(Direction inputDirection, Level world, BlockPos blockPos, BlockState blockState, LaserBlockEntity sender) {
         if (!this.isAcceptableDirection(inputDirection, world, blockPos, blockState)) {
             return false;
         }

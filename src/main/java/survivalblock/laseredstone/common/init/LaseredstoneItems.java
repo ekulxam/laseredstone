@@ -1,13 +1,13 @@
 package survivalblock.laseredstone.common.init;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.Block;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DamageResistantComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.Items;
-import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DamageResistant;
+import net.minecraft.world.level.block.Block;
 
 public class LaseredstoneItems {
 
@@ -19,19 +19,19 @@ public class LaseredstoneItems {
     public static final Item DIFFUSER = register(LaseredstoneBlocks.DIFFUSER);
 
     private static Item register(Block block) {
-        return Items.register(block, new Item.Settings().component(DataComponentTypes.DAMAGE_RESISTANT, new DamageResistantComponent(DamageTypeTags.IS_EXPLOSION)));
+        return Items.registerBlock(block, new Item.Properties().component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_EXPLOSION)));
     }
 
     public static void init() {
         ItemGroupEvents.ModifyEntries addLaseredstoneItems = entries -> {
-            entries.add(HORIZONTAL_VERTICAL_MIRROR);
-            entries.add(HORIZONTAL_HORIZONTAL_MIRROR);
-            entries.add(LASER);
-            entries.add(RECEIVER);
-            entries.add(LENS);
-            entries.add(DIFFUSER);
+            entries.accept(HORIZONTAL_VERTICAL_MIRROR);
+            entries.accept(HORIZONTAL_HORIZONTAL_MIRROR);
+            entries.accept(LASER);
+            entries.accept(RECEIVER);
+            entries.accept(LENS);
+            entries.accept(DIFFUSER);
         };
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(addLaseredstoneItems);
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(addLaseredstoneItems);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(addLaseredstoneItems);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(addLaseredstoneItems);
     }
 }
