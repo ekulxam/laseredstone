@@ -5,22 +5,20 @@ package survivalblock.laseredstone.common.init;
 //~ if >=26 'ModifyEntries' -> 'ModifyOutput' {
 //~ if >=26 'modifyEntriesEvent' -> 'modifyOutputEvent' {
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.DamageResistant;
 import net.minecraft.world.level.block.Block;
+import survivalblock.atmosphere.registrar.ItemRegistrant;
+import survivalblock.laseredstone.common.Laseredstone;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+public final class LaseredstoneItems {
+    private LaseredstoneItems() {
+    }
 
-public class LaseredstoneItems {
+    private static final ItemRegistrant REGISTRANT = new ItemRegistrant(Laseredstone.MOD_ID);
 
     public static final Item HORIZONTAL_VERTICAL_MIRROR = register(LaseredstoneBlocks.HORIZONTAL_VERTICAL_MIRROR);
     public static final Item HORIZONTAL_HORIZONTAL_MIRROR = register(LaseredstoneBlocks.HORIZONTAL_HORIZONTAL_MIRROR);
@@ -30,39 +28,17 @@ public class LaseredstoneItems {
     public static final Item DIFFUSER = register(LaseredstoneBlocks.DIFFUSER);
 
     private static Item register(Block block) {
-        return registerBlock(block, new Item.Properties()
-                //? if <26 {
-                /*.component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_EXPLOSION))
-                *///?} else {
-                .delayedComponent(DataComponents.DAMAGE_RESISTANT, context -> new DamageResistant(context.getOrThrow(DamageTypeTags.IS_EXPLOSION)))
-                //?}
+        return REGISTRANT.register(
+                block,
+                new Item.Properties()
+                        .useBlockDescriptionPrefix()
+                        /*? >=26 {*/ .requiredFeatures(block.requiredFeatures()) /*?}*/
+                        //? if <26 {
+                        /*.component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_EXPLOSION))
+                        *///?} else {
+                        .delayedComponent(DataComponents.DAMAGE_RESISTANT, context -> new DamageResistant(context.getOrThrow(DamageTypeTags.IS_EXPLOSION)))
+                        //?}
         );
-    }
-
-    private static Item registerBlock(final Block block, final Item.Properties properties) {
-        return registerBlock(block, BlockItem::new, properties);
-    }
-
-    private static ResourceKey<Item> blockIdToItemId(final ResourceKey<Block> blockName) {
-        //~ if >=1.21.11 'location' -> 'identifier'
-        return ResourceKey.create(Registries.ITEM, blockName.identifier());
-    }
-
-    private static Item registerBlock(final Block block, final BiFunction<Block, Item.Properties, Item> itemFactory, final Item.Properties properties) {
-        return registerItem(
-                blockIdToItemId(block.builtInRegistryHolder().key()),
-                p -> itemFactory.apply(block, p),
-                properties.useBlockDescriptionPrefix()/*? >=26 {*/ .requiredFeatures(block.requiredFeatures()) /*?}*/
-        );
-    }
-
-    private static Item registerItem(final ResourceKey<Item> key, final Function<Item.Properties, Item> itemFactory, final Item.Properties properties) {
-        Item item = itemFactory.apply(properties.setId(key));
-        if (item instanceof BlockItem blockItem) {
-            blockItem.registerBlocks(Item.BY_BLOCK, item);
-        }
-
-        return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 
     public static void init() {

@@ -1,15 +1,11 @@
 package survivalblock.laseredstone.common.init;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import survivalblock.atmosphere.registrar.BlockRegistrant;
 import survivalblock.laseredstone.common.Laseredstone;
 import survivalblock.laseredstone.common.block.DiffuserBlock;
 import survivalblock.laseredstone.common.block.HorizontalHorizontalMirrorBlock;
@@ -18,11 +14,13 @@ import survivalblock.laseredstone.common.block.HorizontalVerticalMirrorBlock;
 import survivalblock.laseredstone.common.block.LensBlock;
 import survivalblock.laseredstone.common.block.ReceiverBlock;
 
-import java.util.function.Function;
+public final class LaseredstoneBlocks {
+    private LaseredstoneBlocks() {
+    }
 
-public class LaseredstoneBlocks {
+    private static final BlockRegistrant REGISTRANT = new BlockRegistrant(Laseredstone.MOD_ID);
 
-    public static final Block HORIZONTAL_VERTICAL_MIRROR = registerBlock(
+    public static final Block HORIZONTAL_VERTICAL_MIRROR = REGISTRANT.register(
             "horizontal_vertical_mirror",
             HorizontalVerticalMirrorBlock::new,
             BlockBehaviour.Properties.of()
@@ -34,13 +32,13 @@ public class LaseredstoneBlocks {
                     .isValidSpawn(Blocks::never)
     );
 
-    public static final Block HORIZONTAL_HORIZONTAL_MIRROR = registerBlock(
+    public static final Block HORIZONTAL_HORIZONTAL_MIRROR = REGISTRANT.register(
             "horizontal_horizontal_mirror",
             HorizontalHorizontalMirrorBlock::new,
             BlockBehaviour.Properties.ofFullCopy(HORIZONTAL_VERTICAL_MIRROR)
     );
 
-    public static final Block LASER = registerBlock(
+    public static final Block LASER = REGISTRANT.register(
             "laser",
             LaserBlock::new,
             BlockBehaviour.Properties.of()
@@ -49,29 +47,23 @@ public class LaseredstoneBlocks {
                     .isValidSpawn(net.minecraft.world.level.block.Blocks::never)
     );
 
-    public static final Block RECEIVER = registerBlock(
+    public static final Block RECEIVER = REGISTRANT.register(
             "receiver",
             ReceiverBlock::new,
             BlockBehaviour.Properties.ofFullCopy(LASER).mapColor(MapColor.COLOR_BLACK)
     );
 
-    public static final Block LENS = registerBlock(
+    public static final Block LENS = REGISTRANT.register(
             "lens",
             LensBlock::new,
             BlockBehaviour.Properties.ofFullCopy(RECEIVER).noOcclusion()
     );
 
-    public static final Block DIFFUSER = registerBlock(
+    public static final Block DIFFUSER = REGISTRANT.register(
             "diffuser",
             DiffuserBlock::new,
             BlockBehaviour.Properties.ofFullCopy(RECEIVER).noOcclusion()
     );
-
-    @SuppressWarnings("SameParameterValue")
-    private static <T extends Block> T registerBlock(String name, Function<BlockBehaviour.Properties, T> blockFromSettings, BlockBehaviour.Properties settings) {
-        Identifier id = Laseredstone.id(name);
-        return Registry.register(BuiltInRegistries.BLOCK, id, blockFromSettings.apply(settings.setId(ResourceKey.create(Registries.BLOCK, id))));
-    }
 
     public static void init() {
 

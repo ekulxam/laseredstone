@@ -10,8 +10,11 @@ pluginManagement {
 
 plugins {
     id("dev.kikugie.stonecutter") version "0.9.6"
+    id("dev.kikugie.loom-back-compat") version "0.4"
 }
 
+rootProject.name = "laseredstone"
+loomx.loomVersion = "1.16-SNAPSHOT"
 
 stonecutter {
     kotlinController = true
@@ -19,11 +22,7 @@ stonecutter {
     // Subproject configuration
     create(rootProject) {
         fun match(version: String, vararg loaders: String) = loaders.forEach {
-            if (it == "fabric" && stonecutter.eval(version, ">=26")) {
-                version("$version-$it", version).buildscript = "build.fabric_noremap.gradle.kts"
-            } else {
-                version("$version-$it", version).buildscript = "build.$it.gradle.kts"
-            }
+            version("$version-$it", version).buildscript = "build.$it.gradle.kts"
         }
 
         match("1.21.8", "fabric")

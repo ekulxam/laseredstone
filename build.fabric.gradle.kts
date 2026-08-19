@@ -3,7 +3,7 @@ import java.io.FileReader
 import org.gradle.jvm.tasks.Jar
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap")
+    id("dev.kikugie.loom-back-compat")
     id("maven-publish")
     id("com.modrinth.minotaur")
     kotlin("jvm")
@@ -36,23 +36,29 @@ fabricApi {
     }
 }
 
+val deobf = loomx.isUnobfuscated
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${minecraft}")
 
     // apply mappings if obfuscated
-    @Suppress("UnstableApiUsage")
-    mappings (loom.layered {
-        officialMojangMappings()
-        if (hasProperty("deps.parchment")) {
-            parchment("org.parchmentmc.data:parchment-${minecraft}:${property("deps.parchment")}@zip")
-        }
-    })
+    if (!deobf) {
+        @Suppress("UnstableApiUsage")
+        mappings (loom.layered {
+            officialMojangMappings()
+            if (hasProperty("deps.parchment")) {
+                parchment("org.parchmentmc.data:parchment-${minecraft}:${property("deps.parchment")}@zip")
+            }
+        })
+    }
 
     modImplementation("net.fabricmc:fabric-loader:${property("deps.loader_version")}")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+
+    include(modImplementation("maven.modrinth:registrar:${property("deps.registrar_version")}")!!)
 
     modLocalRuntime("maven.modrinth:sodium:${property("deps.sodium_version")}")
     modLocalRuntime("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
@@ -230,10 +236,13 @@ modrinth {
     token = providers.environmentVariable("MODRINTH_TOKEN")
     projectId = project.base.archivesName
     version = project.version
-    uploadFile.set(tasks.named<Jar>("remapJar").get().archiveFile)
-    additionalFiles.add(tasks.named<Jar>("sourcesJar").get().archiveFile)
+    uploadFile.set(loomx.modJar.flatMap { it.archiveFile })
+    additionalFiles.add(loomx.modSourcesJar.flatMap { it.archiveFile })
     gameVersions.addAll("${project.property("deps.compatibleVersions")}".split(", ").toList())
     loaders.addAll("${project.property("deps.compatibleLoaders")}".split(", ").toList())
     changelog = rootProject.file("changelog.md").readText()
     syncBodyFrom = "<!--DO NOT EDIT MANUALLY: synced from gh readme-->\n" + rootProject.file("README.md").readText()
+    dependencies {
+        embedded.version("registrar", "${project.property("deps.registrar_version")}")
+    }
 }

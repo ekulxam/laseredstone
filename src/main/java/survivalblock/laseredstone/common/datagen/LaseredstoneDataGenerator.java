@@ -84,6 +84,6 @@ public class LaseredstoneDataGenerator implements DataGeneratorEntrypoint {
 
 	@Override
 	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-		registryBuilder.add(Registries.DAMAGE_TYPE, LaseredstoneDamageTypes::bootstrap);
+		LaseredstoneDamageTypes.REGISTRANT.bootstrap(registryBuilder);
 	}
 }
